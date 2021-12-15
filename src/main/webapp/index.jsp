@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Noname Tourism Agency</title>
 </head>
-<body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
-</body>
+    <body>
+        <h1><%= "Welcome to Noname Tourism Agency!" %>
+        </h1>
+        <br/>
+        <a href="login">Login / Register</a>
+    </body>
 </html>
