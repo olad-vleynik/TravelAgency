@@ -1,15 +1,17 @@
-package com.gmail.vleynik.olad.nonametourismagency.servlets;
+package com.gmail.vleynik.olad.nonametourismagency.servlet;
 
 import java.io.IOException;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "LoginServlet", value = "/login")
+//@WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
     static final String LOGIN = "admin";
     static final String PASS = "admin";
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
@@ -18,16 +20,18 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user_login", login);
         }
 
-        response.sendRedirect("login.jsp");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String a = request.getParameter("a");
         HttpSession session = request.getSession(false);
 
         if ("exit".equals(a) && (session != null))
             session.removeAttribute("user_login");
 
-        response.sendRedirect("login.jsp");
+
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 }

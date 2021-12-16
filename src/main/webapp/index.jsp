@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Noname Tourism Agency</title>
+    <title>Noname</title>
 </head>
     <body>
         <h1><%= "Welcome to Noname Tourism Agency!" %>

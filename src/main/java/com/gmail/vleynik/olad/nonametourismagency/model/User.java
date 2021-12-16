@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.nonametourismagency;
+package com.gmail.vleynik.olad.nonametourismagency.model;
 
 import java.util.Date;
 

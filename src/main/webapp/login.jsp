@@ -2,9 +2,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title>Noname Tourism Agency</title>
+    <title>Login</title>
 </head>
-    <body>
+    <a href="/">Home</a>
+    <br><br>
+
     <% String login = (String)session.getAttribute("user_login"); %>
 
     <% if (login == null || "".equals(login)) { %>
