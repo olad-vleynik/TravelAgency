@@ -1,19 +1,22 @@
-package com.gmail.vleynik.olad.nonametourismagency.model;
+package com.gmail.vleynik.olad.nonametourismagency.DAO.entity;
 
 import java.util.Date;
 
-public class User {
-    private String firstName;
-    private String secondName;
+public class Staff {
+    private int id;
+    private String name;
+    private String surname;
     private String phoneNumber;
     private String email;
     private String password;
-    //private String language; //cookies?
     private Date birthDay;
+
+    private double balanceInUSD;
     private double personalDiscount;
-    private double maxDiscount;
+
     private AccessLevel accessLevel;
     private boolean isBanned;
+    //private String language; //cookies?
 
     {
         isBanned = false;
@@ -21,7 +24,6 @@ public class User {
 
     private enum AccessLevel {
         ADMINISTRATOR,
-        MANAGER,
-        CLIENT
+        MANAGER
     }
 }
