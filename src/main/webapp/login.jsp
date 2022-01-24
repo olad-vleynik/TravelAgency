@@ -11,13 +11,13 @@
 
     <% if (login == null || "".equals(login)) { %>
         <form action="/login" method="POST">
-            Login: <input type="text" name="login"><br>
+            E-Mail or phone number: <input type="text" name="login"><br>
             Password: <input type="password" name="password"><br>
             <input type="submit" />
         </form>
     <% } else { %>
         <h1>You are logged in as: <%= login %></h1>
-        <br>Click this link to <a href="/login?a=exit">logout</a>
+        <br>Click this link to <a href="/login?action=exit">logout</a>
     <% } %>
     </body>
 </html>

@@ -1,8 +1,9 @@
 package com.gmail.vleynik.olad.nonametourismagency.DAO.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
-public class Client {
+public class User {
     private int id;
     private String name;
     private String surname;
@@ -16,10 +17,16 @@ public class Client {
     private double maxDiscount;
 
     private boolean isBanned;
-    //private String language; //cookies?
+    private AccessLevel accessLevel;
+    //private Language lang;
 
-    public Client(int id, String name, String surname, String phoneNumber, String email, String password, Date birthDay,
-                  double balanceInUSD, double personalDiscount, double maxDiscount, boolean isBanned) {
+
+    public User() {
+    }
+
+    public User(int id, String name, String surname, String phoneNumber, String email,
+                String password, Date birthDay, double balanceInUSD, double personalDiscount,
+                double maxDiscount, boolean isBanned, AccessLevel accessLevel) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -31,6 +38,13 @@ public class Client {
         this.personalDiscount = personalDiscount;
         this.maxDiscount = maxDiscount;
         this.isBanned = isBanned;
+        this.accessLevel = accessLevel;
+    }
+
+    public enum AccessLevel {
+        ADMINISTRATOR,
+        MANAGER,
+        CLIENT
     }
 
     public int getId() {
@@ -119,5 +133,44 @@ public class Client {
 
     public void setBanned(boolean banned) {
         isBanned = banned;
+    }
+
+    public AccessLevel getAccessLevel() {
+        return accessLevel;
+    }
+
+    public void setAccessLevel(AccessLevel accessLevel) {
+        this.accessLevel = accessLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", birthDay=" + birthDay +
+                ", balanceInUSD=" + balanceInUSD +
+                ", personalDiscount=" + personalDiscount +
+                ", maxDiscount=" + maxDiscount +
+                ", isBanned=" + isBanned +
+                ", accessLevel=" + accessLevel +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Double.compare(user.balanceInUSD, balanceInUSD) == 0 && Double.compare(user.personalDiscount, personalDiscount) == 0 && Double.compare(user.maxDiscount, maxDiscount) == 0 && isBanned == user.isBanned && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(birthDay, user.birthDay) && accessLevel == user.accessLevel;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, phoneNumber, email, password, birthDay, balanceInUSD, personalDiscount, maxDiscount, isBanned, accessLevel);
     }
 }

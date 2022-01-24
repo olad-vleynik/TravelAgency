@@ -1,12 +1,13 @@
 package com.gmail.vleynik.olad.nonametourismagency.servlet;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
-//@WebServlet(name = "LoginServlet", value = "/login")
-public class LoginServlet extends HttpServlet {
+public class RegistrationServlet extends HttpServlet {
     static final String LOGIN = "admin";
     static final String PASS = "admin";
 
@@ -32,6 +33,6 @@ public class LoginServlet extends HttpServlet {
             session.removeAttribute("user_login");
 
 
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 }

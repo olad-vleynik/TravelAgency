@@ -15,13 +15,13 @@ public class Tour {
     private int hotelRating;
     private String info;
 
-    private enum TourType {
+    public enum TourType {
         RELAX,
         SIGHTSEEING,
         SHOPPING
     }
 
-    private enum State {
+    public enum State {
         AVAILABLE,
         BOOKED,
         PAYED,

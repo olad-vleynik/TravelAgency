@@ -8,6 +8,6 @@
         <h1><%= "Welcome to Noname Tourism Agency!" %>
         </h1>
         <br/>
-        <a href="login">Login / Register</a>
+        <a href="register">Register</a> | <a href="login">Login</a>
     </body>
 </html>

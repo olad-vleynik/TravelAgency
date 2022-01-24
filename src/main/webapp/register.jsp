@@ -1,16 +1,23 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Администратор
-  Date: 05.01.2022
-  Time: 22:42
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title>Title</title>
+    <title>Register</title>
 </head>
-<body>
+    <a href="/">Home</a>
+    <br><br>
 
-</body>
+    <% String login = (String)session.getAttribute("user_login"); %>
+
+    <% if (login == null || "".equals(login)) { %>
+        <form action="/register" method="POST">
+            E-Mail or phone number: <input type="text" name="login"><br>
+            Password: <input type="password" name="password"><br>
+            <input type="submit" />
+        </form>
+    <% } else { %>
+        <h1>You are logged in as: <%= login %></h1>
+        <br>Click this link to <a href="/login?action=exit">logout</a>
+    <% } %>
+    </body>
 </html>
