@@ -1,7 +1,7 @@
 package com.gmail.vleynik.olad.nonametourismagency.DAO;
 
 import com.gmail.vleynik.olad.nonametourismagency.DAO.entity.User;
-import com.gmail.vleynik.olad.nonametourismagency.utils.ConnectionFactory;
+import com.gmail.vleynik.olad.nonametourismagency.utils.ConnectionUtil;
 
 import java.sql.*;
 
@@ -14,7 +14,7 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public void addNew(User user) {
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY)) {
 
             preparedStatement.setString(2, user.getName());
@@ -33,7 +33,7 @@ public class UserDAO implements DAO<User> {
     @Override
     public User get(int id) {
         User user = new User();
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_QUERY)) {
 
             preparedStatement.setInt(1, id);
@@ -57,7 +57,7 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public void delete(int id) {
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_QUERY)) {
 
             preparedStatement.setInt(1, id);
