@@ -4,20 +4,17 @@
 <head>
     <title>Register</title>
 </head>
-    <a href="/">Home</a>
-    <br><br>
-
-    <% String login = (String)session.getAttribute("user_login"); %>
-
-    <% if (login == null || "".equals(login)) { %>
-        <form action="/register" method="POST">
-            E-Mail or phone number: <input type="text" name="login"><br>
-            Password: <input type="password" name="password"><br>
-            <input type="submit" />
-        </form>
-    <% } else { %>
-        <h1>You are logged in as: <%= login %></h1>
-        <br>Click this link to <a href="/login?action=exit">logout</a>
-    <% } %>
-    </body>
+<body>
+<a href="/">Home</a>
+<br><br>
+<form action="/register" method="POST">
+    Name: <input type="text" name="name"><br>
+    Surname: <input type="text" name="surname"><br>
+    Phone number: <input type="text" name="number"><br>
+    E-Mail: <input type="text" name="email"><br>
+    Password: <input type="password" name="password"><br>
+    Date of birth: <input type="date" name="birthday"><br>
+    <input type="submit"/>
+</form>
+</body>
 </html>

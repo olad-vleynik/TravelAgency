@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user_login", login);
         }
 
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @Override
@@ -28,10 +28,14 @@ public class LoginServlet extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession(false);
 
-        if ("exit".equals(action) && (session != null))
-            session.removeAttribute("user_login");
 
-
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        if (session == null || session.getAttribute("user_login") == null || session.getAttribute("user_login").equals("")) {
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            if ("exit".equals(action)) {
+                session.removeAttribute("user_login");
+            }
+            response.sendRedirect(request.getContextPath() + "/");
+        }
     }
 }

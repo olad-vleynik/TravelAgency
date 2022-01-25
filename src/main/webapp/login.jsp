@@ -4,6 +4,7 @@
 <head>
     <title>Login</title>
 </head>
+<body>
     <a href="/">Home</a>
     <br><br>
 
@@ -19,5 +20,5 @@
         <h1>You are logged in as: <%= login %></h1>
         <br>Click this link to <a href="/login?action=exit">logout</a>
     <% } %>
-    </body>
+</body>
 </html>
