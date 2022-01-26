@@ -8,7 +8,7 @@
     <a href="/">Home</a>
     <br><br>
 
-    <% String login = (String)session.getAttribute("user_login"); %>
+    <% String login = (String)session.getAttribute("user_id"); %>
 
     <% if (login == null || "".equals(login)) { %>
         <form action="/login" method="POST">

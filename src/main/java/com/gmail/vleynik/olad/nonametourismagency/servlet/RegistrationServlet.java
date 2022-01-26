@@ -2,6 +2,7 @@ package com.gmail.vleynik.olad.nonametourismagency.servlet;
 
 import com.gmail.vleynik.olad.nonametourismagency.DAO.UserDAO;
 import com.gmail.vleynik.olad.nonametourismagency.DAO.entity.User;
+import com.gmail.vleynik.olad.nonametourismagency.utils.UserInputCheck;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,30 +16,38 @@ import java.util.Date;
 
 public class RegistrationServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User newUser = new User();
-        UserDAO userDAO = new UserDAO();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,  ServletException {
+        User newUser;
+        UserDAO userDAO;
 
-        System.out.println(request.getParameter("name"));
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String password = request.getParameter("password");
 
-        newUser.setName(request.getParameter("name"));
-        newUser.setSurname(request.getParameter("surname"));
-        newUser.setPhoneNumber(request.getParameter("number"));
-        newUser.setEmail(request.getParameter("email"));
-        newUser.setPassword(request.getParameter("password"));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            newUser.setBirthDay(sdf.parse(request.getParameter("birthday")));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (UserInputCheck.isValid(email, phoneNumber, password)) {
+            newUser = new User();
+            userDAO = new UserDAO();
+            newUser.setName(request.getParameter("name"));
+            newUser.setSurname(request.getParameter("surname"));
+            newUser.setPhoneNumber(phoneNumber);
+            newUser.setEmail(email);
+            newUser.setPassword(password);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                newUser.setBirthDay(sdf.parse(request.getParameter("birthday")));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            newUser.setId(userDAO.addNew(newUser));
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user_id", newUser.getId());
+
+            response.sendRedirect(request.getContextPath() + "/");
+        } else {
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         }
-
-        newUser.setId(userDAO.addNew(newUser));
-
-        HttpSession session = request.getSession(true);
-        session.setAttribute("user_id", newUser.getId());
-
-        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @Override

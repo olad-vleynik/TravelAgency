@@ -10,7 +10,7 @@
 <form action="/register" method="POST">
     Name: <input type="text" name="name"><br>
     Surname: <input type="text" name="surname"><br>
-    Phone number: <input type="text" name="number"><br>
+    Phone number: <input type="text" name="phoneNumber"><br>
     E-Mail: <input type="text" name="email"><br>
     Password: <input type="password" name="password"><br>
     Date of birth: <input type="date" name="birthday"><br>

@@ -9,7 +9,9 @@ public class UserDAO implements DAO<User> {
 
     private static final String INSERT_USER_QUERY =
             "INSERT INTO users VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
-    private static final String SELECT_USER_QUERY = "SELECT * FROM users WHERE id=?";
+    private static final String SELECT_BY_ID_USER_QUERY = "SELECT * FROM users WHERE id=?";
+    private static final String SELECT_BY_PHONE_NUMBER_USER_QUERY = "SELECT * FROM users WHERE phoneNumber=?";
+    private static final String SELECT_BY_EMAIL_USER_QUERY = "SELECT * FROM users WHERE email=?";
     private static final String DELETE_USER_QUERY = "DELETE FROM users WHERE id=?";
 
     @Override
@@ -32,19 +34,46 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public User get(int id) {
+    public User getById(int id) {
+        try {
+            return getUser(SELECT_BY_ID_USER_QUERY, String.valueOf(id), true);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new User();
+    }
+
+    public User getByPhoneNumber(String phoneNumber) throws UserNotFoundException {
+        if (phoneNumber.startsWith("0"))
+            phoneNumber = "+38" + phoneNumber;
+        return getUser(SELECT_BY_PHONE_NUMBER_USER_QUERY, phoneNumber, false);
+    }
+
+    public User getByEmail(String email) throws UserNotFoundException {
+        return getUser(SELECT_BY_EMAIL_USER_QUERY, email, false);
+    }
+
+    private User getUser(String query, String value, boolean isValueInt) throws UserNotFoundException {
         User user = new User();
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, id);
+            if (isValueInt)
+                preparedStatement.setInt(1, Integer.parseInt(value));
+            else
+                preparedStatement.setString(1, value);
+
             ResultSet rs = preparedStatement.executeQuery();
+            if (!rs.isBeforeFirst())
+                throw new UserNotFoundException();
             rs.next();
 
             user = new User(rs.getInt("id"),  rs.getString("name"),  rs.getString("surname"),
                     rs.getString("phoneNumber"),  rs.getString("email"),  rs.getString("password"),
-                    rs.getDate("birtDay"),  rs.getDouble("balanceInUSD"),  rs.getDouble("personalDiscount"),
+                    rs.getDate("birthDay"),  rs.getDouble("balanceInUSD"),  rs.getDouble("personalDiscount"),
                     rs.getDouble("maxDiscount"), rs.getBoolean("isBanned"), User.AccessLevel.valueOf(rs.getString("accessLevel")));
+        } catch (UserNotFoundException e) {
+            throw e;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,8 @@
 package com.gmail.vleynik.olad.nonametourismagency.utils;
 
+import com.gmail.vleynik.olad.nonametourismagency.DAO.UserDAO;
+import com.gmail.vleynik.olad.nonametourismagency.DAO.UserNotFoundException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,12 +16,9 @@ public class UserInputCheck {
 
     private static final String EMAIL_DUPLICATE = "такой e-mail уже зарегистрирован";
     private static final String EMAIL_INVALID = "некорректный e-mail";
-    private static final String NUMBER_DUPLICATE = "такой номер уже зарегистрирован";
-    private static final String NUMBER_INVALID = "некорректный номер (пример ввода: +380993332211, 0993332211)";
+    private static final String PHONE_NUMBER_DUPLICATE = "такой номер уже зарегистрирован";
+    private static final String PHONE_NUMBER_INVALID = "некорректный номер (пример ввода: +380993332211, 0993332211)";
     private static final String PASSWORD_TOO_SHORT = "пароль слишком короткий (минимум " + MIN_PASSWORD_LENGTH + " символов)";
-
-    private static final String SELECT_USER_EMAIL_QUERY = "SELECT * FROM users WHERE email=?";
-    private static final String SELECT_USER_NUMBER_QUERY = "SELECT * FROM users WHERE number=?";
 
     private UserInputCheck() {
     }
@@ -28,10 +28,14 @@ public class UserInputCheck {
     public static final Pattern VALID_NUMBER_REGEX =
             Pattern.compile("^(\\+38)?(067|096|097|098|050|066|095|099|063|073|093)\\d{7}$");
 
+    public static boolean isValid(String email, String phoneNumber, String password) {
+        return checkEmail(email).equals("") && checkNumber(phoneNumber).equals("") && checkPassword(password).equals("");
+    }
+
     public static String checkEmail(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         if (matcher.find()) {
-            if (notDuplicate(SELECT_USER_EMAIL_QUERY, email)) {
+            if (notDuplicate("email", email)) {
                 return "";
             } else {
                 return EMAIL_DUPLICATE;
@@ -41,17 +45,17 @@ public class UserInputCheck {
         }
     }
 
-    public static String checkNumber(String number) {
-        Matcher matcher = VALID_NUMBER_REGEX.matcher(number);
+    public static String checkNumber(String phoneNumber) {
+        Matcher matcher = VALID_NUMBER_REGEX.matcher(phoneNumber);
         if (matcher.find()) {
-            if (number.startsWith("0"))
-                number = "+38" + number;
-            if (notDuplicate(SELECT_USER_NUMBER_QUERY, number))
+            if (phoneNumber.startsWith("0"))
+                phoneNumber = "+38" + phoneNumber;
+            if (notDuplicate("phoneNumber", phoneNumber))
                 return "";
             else
-                return NUMBER_DUPLICATE;
+                return PHONE_NUMBER_DUPLICATE;
         } else {
-            return NUMBER_INVALID;
+            return PHONE_NUMBER_INVALID;
         }
     }
 
@@ -61,17 +65,22 @@ public class UserInputCheck {
         return "";
     }
 
-    private static boolean notDuplicate(String statement, String checkable) {
-        try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
-
-            preparedStatement.setString(1, checkable);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (!rs.isBeforeFirst())
-                return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private static boolean notDuplicate(String checkable, String value) {
+        UserDAO userDAO = new UserDAO();
+        try {
+            switch (checkable) {
+                case "email":
+                    userDAO.getByEmail(value);
+                    break;
+                case "phoneNumber":
+                    userDAO.getByPhoneNumber(value);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+            return false;
+        } catch (UserNotFoundException e) {
+            return true;
         }
-        return false;
     }
 }
