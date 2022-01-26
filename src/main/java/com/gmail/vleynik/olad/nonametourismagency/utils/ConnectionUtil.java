@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
-    private static final String PROPERTIES_FILE = File.separator + "database.properties";
+    private static final String PROPERTIES_FILE = "/database.properties";
     private static final int INIT_CONNECTIONS_COUNT = 5;
     private static final int MAX_CONNECTIONS_COUNT = 10;
 
@@ -24,10 +24,10 @@ public class ConnectionUtil {
                 dataBaseProperties.load(propertiesInputStream);
 
                 dataSource = new BasicDataSource();
-                dataSource.setDriverClassName(dataBaseProperties.getProperty("MYSQL_DB_DRIVER_CLASS"));
-                dataSource.setUrl(dataBaseProperties.getProperty("MYSQL_DB_URL"));
-                dataSource.setUsername(dataBaseProperties.getProperty("MYSQL_DB_USERNAME"));
-                dataSource.setPassword(dataBaseProperties.getProperty("MYSQL_DB_PASSWORD"));
+                dataSource.setDriverClassName(dataBaseProperties.getProperty("db.driver"));
+                dataSource.setUrl(dataBaseProperties.getProperty("db.url"));
+                dataSource.setUsername(dataBaseProperties.getProperty("db.user"));
+                dataSource.setPassword(dataBaseProperties.getProperty("db.password"));
 
                 dataSource.setInitialSize(INIT_CONNECTIONS_COUNT);
                 dataSource.setMaxTotal(MAX_CONNECTIONS_COUNT);

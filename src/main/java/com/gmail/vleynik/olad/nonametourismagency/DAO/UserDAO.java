@@ -13,21 +13,22 @@ public class UserDAO implements DAO<User> {
     private static final String DELETE_USER_QUERY = "DELETE FROM users WHERE id=?";
 
     @Override
-    public void addNew(User user) {
+    public int addNew(User user) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setString(3, user.getSurname());
-            preparedStatement.setString(4, user.getPhoneNumber());
-            preparedStatement.setString(5, user.getEmail());
-            preparedStatement.setString(6, user.getPassword());
-            preparedStatement.setDate(7, new java.sql.Date(user.getBirthDay().getTime()));
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getPhoneNumber());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setDate(6, new java.sql.Date(user.getBirthDay().getTime()));
 
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     @Override
