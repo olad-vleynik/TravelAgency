@@ -3,10 +3,6 @@ package com.gmail.vleynik.olad.nonametourismagency.utils;
 import com.gmail.vleynik.olad.nonametourismagency.DAO.UserDAO;
 import com.gmail.vleynik.olad.nonametourismagency.DAO.UserNotFoundException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,11 +24,11 @@ public class UserInputCheck {
     public static final Pattern VALID_NUMBER_REGEX =
             Pattern.compile("^(\\+38)?0(67|68|96|97|98|50|66|95|99|63|73|93)\\d{7}$");
 
-    public static boolean isValid(String email, String phoneNumber, String password) {
+    public static boolean isValidAndNotDublicate(String email, String phoneNumber, String password) {
         System.out.println(checkEmail(email));
-        System.out.println(checkNumber(phoneNumber));
+        System.out.println(checkPhoneNumber(phoneNumber));
         System.out.println(checkPassword(password));
-        return checkEmail(email).equals("") && checkNumber(phoneNumber).equals("") && checkPassword(password).equals("");
+        return checkEmail(email).equals("") && checkPhoneNumber(phoneNumber).equals("") && checkPassword(password).equals("");
     }
 
     public static String checkEmail(String email) {
@@ -48,7 +44,7 @@ public class UserInputCheck {
         }
     }
 
-    public static String checkNumber(String phoneNumber) {
+    public static String checkPhoneNumber(String phoneNumber) {
         Matcher matcher = VALID_NUMBER_REGEX.matcher(phoneNumber);
         if (matcher.find()) {
             if (phoneNumber.startsWith("0"))

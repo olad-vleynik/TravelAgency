@@ -27,6 +27,13 @@ public class LoginServlet extends HttpServlet {
 
             if (password.equals(user.getPassword())) {
                 HttpSession session = request.getSession(true);
+
+                // сессия рвется при закрытии вкладки
+                session.setMaxInactiveInterval(-1);
+
+                //если юзер пытался зарегистрироваться, указав неверные данные
+                session.invalidate();
+
                 session.setAttribute("user_full_name", user.getName() + " " + user.getSurname());
                 session.setAttribute("user_id", user.getId());
             }
@@ -50,7 +57,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             if ("exit".equals(action)) {
-                session.removeAttribute("user_id");
+                session.invalidate();
             }
             response.sendRedirect(request.getContextPath() + "/");
         }

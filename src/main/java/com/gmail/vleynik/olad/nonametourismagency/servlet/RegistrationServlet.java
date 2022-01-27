@@ -13,12 +13,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,  ServletException {
+        HttpSession session = request.getSession(true);
         User newUser;
         UserDAO userDAO;
 
@@ -26,7 +26,7 @@ public class RegistrationServlet extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         String password = request.getParameter("password");
 
-        if (UserInputCheck.isValid(email, phoneNumber, password)) {
+        if (UserInputCheck.isValidAndNotDublicate(email, phoneNumber, password)) {
             newUser = new User();
             userDAO = new UserDAO();
             newUser.setName(request.getParameter("name"));
@@ -42,12 +42,18 @@ public class RegistrationServlet extends HttpServlet {
             }
 
             newUser.setId(userDAO.addNew(newUser));
-            HttpSession session = request.getSession(true);
+            session.invalidate();
             session.setAttribute("user_id", newUser.getId());
             session.setAttribute("user_full_name", newUser.getName() + " " + newUser.getSurname());
 
+            // сессия рвется при закрытии вкладки
+            session.setMaxInactiveInterval(-1);
+
             response.sendRedirect(request.getContextPath() + "/");
         } else {
+            session.setAttribute("email_error", UserInputCheck.checkEmail(email));
+            session.setAttribute("phone_number_error", UserInputCheck.checkPhoneNumber(phoneNumber));
+            session.setAttribute("password_error", UserInputCheck.checkPassword(password));
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
