@@ -26,9 +26,12 @@ public class UserInputCheck {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     public static final Pattern VALID_NUMBER_REGEX =
-            Pattern.compile("^(\\+38)?(067|096|097|098|050|066|095|099|063|073|093)\\d{7}$");
+            Pattern.compile("^(\\+38)?0(67|68|96|97|98|50|66|95|99|63|73|93)\\d{7}$");
 
     public static boolean isValid(String email, String phoneNumber, String password) {
+        System.out.println(checkEmail(email));
+        System.out.println(checkNumber(phoneNumber));
+        System.out.println(checkPassword(password));
         return checkEmail(email).equals("") && checkNumber(phoneNumber).equals("") && checkPassword(password).equals("");
     }
 

@@ -5,6 +5,7 @@ import com.gmail.vleynik.olad.nonametourismagency.DAO.entity.User;
 import com.gmail.vleynik.olad.nonametourismagency.utils.UserInputCheck;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,  ServletException {
@@ -40,9 +42,9 @@ public class RegistrationServlet extends HttpServlet {
             }
 
             newUser.setId(userDAO.addNew(newUser));
-
             HttpSession session = request.getSession(true);
             session.setAttribute("user_id", newUser.getId());
+            session.setAttribute("user_full_name", newUser.getName() + " " + newUser.getSurname());
 
             response.sendRedirect(request.getContextPath() + "/");
         } else {
@@ -53,7 +55,7 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user_login") == null || session.getAttribute("user_login").equals("")) {
+        if (session == null || session.getAttribute("user_id") == null || session.getAttribute("user_id").equals("")) {
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/");
