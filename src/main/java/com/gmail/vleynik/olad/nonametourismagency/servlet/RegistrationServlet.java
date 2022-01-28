@@ -13,20 +13,44 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,  ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(true);
+
+        Enumeration<String> attributes = session.getAttributeNames();
+
+        while (attributes.hasMoreElements()) {
+            session.removeAttribute(attributes.nextElement());
+        }
+
+        HashMap<String, String> inputErrors = new HashMap<>();
         User newUser;
         UserDAO userDAO;
 
-        String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String email = request.getParameter("email");
 
-        if (UserInputCheck.isValidAndNotDublicate(email, phoneNumber, password)) {
+        inputErrors.put("email_input_error", UserInputCheck.checkEmail(email));
+        inputErrors.put("phone_number_input_error", UserInputCheck.checkPhoneNumber(phoneNumber));
+        inputErrors.put("password_input_error", UserInputCheck.checkPassword(password));
+        inputErrors.put("name_input_error", UserInputCheck.checkName(name));
+        inputErrors.put("surname_input_error", UserInputCheck.checkName(surname));
+
+        inputErrors.entrySet()
+                .removeIf(
+                        entry -> (""
+                                .equals(entry.getValue())));
+
+        if (inputErrors.isEmpty()) {
             newUser = new User();
             userDAO = new UserDAO();
             newUser.setName(request.getParameter("name"));
@@ -42,7 +66,6 @@ public class RegistrationServlet extends HttpServlet {
             }
 
             newUser.setId(userDAO.addNew(newUser));
-            session.invalidate();
             session.setAttribute("user_id", newUser.getId());
             session.setAttribute("user_full_name", newUser.getName() + " " + newUser.getSurname());
 
@@ -51,17 +74,17 @@ public class RegistrationServlet extends HttpServlet {
 
             response.sendRedirect(request.getContextPath() + "/");
         } else {
-            session.setAttribute("email_error", UserInputCheck.checkEmail(email));
-            session.setAttribute("phone_number_error", UserInputCheck.checkPhoneNumber(phoneNumber));
-            session.setAttribute("password_error", UserInputCheck.checkPassword(password));
+            for (Map.Entry<String, String> error : inputErrors.entrySet()) {
+                session.setAttribute(error.getKey(), error.getValue());
+            }
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user_id") == null || session.getAttribute("user_id").equals("")) {
+        HttpSession session = request.getSession(true);
+        if (session.getAttribute("user_id") == null || session.getAttribute("user_id").equals("")) {
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/");

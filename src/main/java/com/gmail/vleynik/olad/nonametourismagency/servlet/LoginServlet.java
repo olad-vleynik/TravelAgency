@@ -32,7 +32,8 @@ public class LoginServlet extends HttpServlet {
                 session.setMaxInactiveInterval(-1);
 
                 //если юзер пытался зарегистрироваться, указав неверные данные
-                session.invalidate();
+                if (!session.getAttributeNames().hasMoreElements())
+                    session.invalidate();
 
                 session.setAttribute("user_full_name", user.getName() + " " + user.getSurname());
                 session.setAttribute("user_id", user.getId());
@@ -57,7 +58,8 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             if ("exit".equals(action)) {
-                session.invalidate();
+                if (!session.getAttributeNames().hasMoreElements())
+                    session.invalidate();
             }
             response.sendRedirect(request.getContextPath() + "/");
         }
