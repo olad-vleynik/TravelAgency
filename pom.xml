@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gmail.vleynik.olad</groupId>
-    <artifactId>NonameTourismAgency</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>NonameTourismAgency</name>
+    <artifactId>TravelAgency</artifactId>
+    <version>1.0</version>
+    <name>TravelAgency</name>
     <packaging>war</packaging>
 
     <properties>

@@ -1,7 +1,7 @@
-package com.gmail.vleynik.olad.nonametourismagency.DAO;
+package com.gmail.vleynik.olad.travelagency.DAO;
 
-import com.gmail.vleynik.olad.nonametourismagency.DAO.entity.User;
-import com.gmail.vleynik.olad.nonametourismagency.utils.ConnectionUtil;
+import com.gmail.vleynik.olad.travelagency.DAO.entity.User;
+import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 
 import java.sql.*;
 

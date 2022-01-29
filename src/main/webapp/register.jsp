@@ -1,4 +1,4 @@
-<%@ page import="java.util.Optional" %>
+<%@ page import="com.gmail.vleynik.olad.travelagency.utils.UserInputCheck" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -9,16 +9,16 @@
 <a href="/">Home</a>
 <br><br>
 <form action="/register" method="POST">
-    Name: <input type="text" name="name">
-    <%=Optional.ofNullable(request.getSession().getAttribute("name_input_error")).orElse("")%><br>
+    Name: <input type="text" name="name" value="">
+    <%=UserInputCheck.checkName(request.getParameter("name"))%><br>
     Surname: <input type="text" name="surname">
-    <%=Optional.ofNullable(request.getSession().getAttribute("surname_input_error")).orElse("")%><br>
+    <%=UserInputCheck.checkName(request.getParameter("surname"))%><br>
     Phone number: <input type="text" name="phoneNumber">
-    <%=Optional.ofNullable(request.getSession().getAttribute("phone_number_input_error")).orElse("")%><br>
+    <%=UserInputCheck.checkPhoneNumber(request.getParameter("phoneNumber"))%><br>
     E-Mail: <input type="text" name="email">
-    <%=Optional.ofNullable(request.getSession().getAttribute("email_input_error")).orElse("")%><br>
+    <%=UserInputCheck.checkEmail(request.getParameter("email"))%><br>
     Password: <input type="password" name="password">
-    <%=Optional.ofNullable(request.getSession().getAttribute("password_input_error")).orElse("")%><br>
+    <%=UserInputCheck.checkPassword(request.getParameter("password"))%><br>
     Date of birth: <input type="date" name="birthday"><br>
     <input type="submit"/>
 </form>

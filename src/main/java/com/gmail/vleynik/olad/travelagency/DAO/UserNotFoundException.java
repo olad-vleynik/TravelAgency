@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.nonametourismagency.DAO;
+package com.gmail.vleynik.olad.travelagency.DAO;
 
 import java.sql.SQLException;
 

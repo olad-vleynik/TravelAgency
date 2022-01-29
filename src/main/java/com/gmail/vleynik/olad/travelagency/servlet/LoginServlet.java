@@ -1,8 +1,8 @@
-package com.gmail.vleynik.olad.nonametourismagency.servlet;
+package com.gmail.vleynik.olad.travelagency.servlet;
 
-import com.gmail.vleynik.olad.nonametourismagency.DAO.UserDAO;
-import com.gmail.vleynik.olad.nonametourismagency.DAO.UserNotFoundException;
-import com.gmail.vleynik.olad.nonametourismagency.DAO.entity.User;
+import com.gmail.vleynik.olad.travelagency.DAO.UserDAO;
+import com.gmail.vleynik.olad.travelagency.DAO.UserNotFoundException;
+import com.gmail.vleynik.olad.travelagency.DAO.entity.User;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -31,14 +31,11 @@ public class LoginServlet extends HttpServlet {
                 // сессия рвется при закрытии вкладки
                 session.setMaxInactiveInterval(-1);
 
-                //если юзер пытался зарегистрироваться, указав неверные данные
-                if (!session.getAttributeNames().hasMoreElements())
-                    session.invalidate();
-
                 session.setAttribute("user_full_name", user.getName() + " " + user.getSurname());
                 session.setAttribute("user_id", user.getId());
+            } else {
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-
             response.sendRedirect(request.getContextPath() + "/");
         } catch (UserNotFoundException e) {
             System.out.println("user not found"); //TODO
@@ -58,8 +55,8 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             if ("exit".equals(action)) {
-                if (!session.getAttributeNames().hasMoreElements())
-                    session.invalidate();
+                session.removeAttribute("user_full_name");
+                session.removeAttribute("user_id");
             }
             response.sendRedirect(request.getContextPath() + "/");
         }

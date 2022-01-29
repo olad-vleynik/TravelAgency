@@ -1,8 +1,8 @@
-package com.gmail.vleynik.olad.nonametourismagency.servlet;
+package com.gmail.vleynik.olad.travelagency.servlet;
 
-import com.gmail.vleynik.olad.nonametourismagency.DAO.UserDAO;
-import com.gmail.vleynik.olad.nonametourismagency.DAO.entity.User;
-import com.gmail.vleynik.olad.nonametourismagency.utils.UserInputCheck;
+import com.gmail.vleynik.olad.travelagency.DAO.UserDAO;
+import com.gmail.vleynik.olad.travelagency.DAO.entity.User;
+import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,23 +13,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(true);
-
-        Enumeration<String> attributes = session.getAttributeNames();
-
-        while (attributes.hasMoreElements()) {
-            session.removeAttribute(attributes.nextElement());
-        }
-
-        HashMap<String, String> inputErrors = new HashMap<>();
         User newUser;
         UserDAO userDAO;
 
@@ -39,22 +28,12 @@ public class RegistrationServlet extends HttpServlet {
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
 
-        inputErrors.put("email_input_error", UserInputCheck.checkEmail(email));
-        inputErrors.put("phone_number_input_error", UserInputCheck.checkPhoneNumber(phoneNumber));
-        inputErrors.put("password_input_error", UserInputCheck.checkPassword(password));
-        inputErrors.put("name_input_error", UserInputCheck.checkName(name));
-        inputErrors.put("surname_input_error", UserInputCheck.checkName(surname));
 
-        inputErrors.entrySet()
-                .removeIf(
-                        entry -> (""
-                                .equals(entry.getValue())));
-
-        if (inputErrors.isEmpty()) {
+        if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
             newUser = new User();
             userDAO = new UserDAO();
-            newUser.setName(request.getParameter("name"));
-            newUser.setSurname(request.getParameter("surname"));
+            newUser.setName(name);
+            newUser.setSurname(surname);
             newUser.setPhoneNumber(phoneNumber);
             newUser.setEmail(email);
             newUser.setPassword(password);
@@ -74,9 +53,6 @@ public class RegistrationServlet extends HttpServlet {
 
             response.sendRedirect(request.getContextPath() + "/");
         } else {
-            for (Map.Entry<String, String> error : inputErrors.entrySet()) {
-                session.setAttribute(error.getKey(), error.getValue());
-            }
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }

@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.nonametourismagency.servlet;
+package com.gmail.vleynik.olad.travelagency.servlet;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

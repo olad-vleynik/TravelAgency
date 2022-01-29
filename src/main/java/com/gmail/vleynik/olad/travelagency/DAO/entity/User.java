@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.nonametourismagency.DAO.entity;
+package com.gmail.vleynik.olad.travelagency.DAO.entity;
 
 import java.util.Date;
 import java.util.Objects;

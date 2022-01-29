@@ -1,7 +1,7 @@
-package com.gmail.vleynik.olad.nonametourismagency.utils;
+package com.gmail.vleynik.olad.travelagency.utils;
 
-import com.gmail.vleynik.olad.nonametourismagency.DAO.UserDAO;
-import com.gmail.vleynik.olad.nonametourismagency.DAO.UserNotFoundException;
+import com.gmail.vleynik.olad.travelagency.DAO.UserDAO;
+import com.gmail.vleynik.olad.travelagency.DAO.UserNotFoundException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,11 +27,13 @@ public class UserInputCheck {
     public static final Pattern VALID_NAME_REGEX =
             Pattern.compile("^[A-Z][a-z]+$");
 
-    public static boolean isValidAndNotDublicate(String email, String phoneNumber, String password, String name, String surname) {
+    public static boolean isValidAndNotDuplicate(String email, String phoneNumber, String password, String name, String surname) {
         return checkEmail(email).equals("") && checkPhoneNumber(phoneNumber).equals("") && checkPassword(password).equals("") && checkName(name).equals("") && checkName(surname).equals("");
     }
 
     public static String checkEmail(String email) {
+        if (email == null)
+            return "";
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         if (matcher.find()) {
             if (notDuplicate("email", email)) {
@@ -45,6 +47,8 @@ public class UserInputCheck {
     }
 
     public static String checkPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null)
+            return "";
         Matcher matcher = VALID_NUMBER_REGEX.matcher(phoneNumber);
         if (matcher.find()) {
             if (phoneNumber.startsWith("0"))
@@ -59,18 +63,16 @@ public class UserInputCheck {
     }
 
     public static String checkPassword(String password) {
-        if (password.length() < MIN_PASSWORD_LENGTH)
-            return PASSWORD_TOO_SHORT;
-        return "";
+        if (password == null || password.length() >= MIN_PASSWORD_LENGTH)
+            return "";
+        return PASSWORD_TOO_SHORT;
     }
 
     public static String checkName(String name) {
-        Matcher matcher = VALID_NAME_REGEX.matcher(name);
-        if (matcher.find()) {
+        if (name == null || VALID_NAME_REGEX.matcher(name).find()) {
             return "";
-        } else {
-            return NAME_INVALID;
         }
+        return NAME_INVALID;
     }
 
     private static boolean notDuplicate(String checkable, String value) {

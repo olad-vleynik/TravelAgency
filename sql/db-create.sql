@@ -1,8 +1,8 @@
-DROP database IF EXISTS tourism_agency;
+DROP database IF EXISTS travel_agency;
 
-CREATE database tourism_agency;
+CREATE database travel_agency;
 
-USE tourism_agency;
+USE travel_agency;
 
 CREATE TABLE users
 (
