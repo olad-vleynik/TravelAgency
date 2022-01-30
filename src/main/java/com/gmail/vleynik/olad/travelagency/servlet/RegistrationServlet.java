@@ -1,7 +1,7 @@
 package com.gmail.vleynik.olad.travelagency.servlet;
 
-import com.gmail.vleynik.olad.travelagency.DAO.UserDAO;
-import com.gmail.vleynik.olad.travelagency.DAO.entity.User;
+import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
+import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
 
 import javax.servlet.ServletException;
@@ -16,6 +16,12 @@ import java.text.SimpleDateFormat;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
+    private static final String USER_ID = "user_id";
+    private static final String USER_FULL_NAME = "user_full_name";
+    private static final String USER_ACCESS_LEVEL = "user_access_level";
+
+    private static final String REGISTER_JSP = "register.jsp";
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(true);
@@ -43,25 +49,23 @@ public class RegistrationServlet extends HttpServlet {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             newUser.setId(userDAO.addNew(newUser));
-            session.setAttribute("user_id", newUser.getId());
-            session.setAttribute("user_full_name", newUser.getName() + " " + newUser.getSurname());
 
-            // сессия рвется при закрытии вкладки
-            session.setMaxInactiveInterval(-1);
+            session.setAttribute(USER_ID, newUser.getId());
+            session.setAttribute(USER_ACCESS_LEVEL, newUser.getAccessLevel());
+            session.setAttribute(USER_FULL_NAME, newUser.getName() + " " + newUser.getSurname());
 
             response.sendRedirect(request.getContextPath() + "/");
         } else {
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher(REGISTER_JSP).forward(request, response);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("user_id") == null || session.getAttribute("user_id").equals("")) {
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+        if (session.getAttribute(USER_ID) == null || session.getAttribute(USER_ID).equals("")) {
+            request.getRequestDispatcher(REGISTER_JSP).forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/");
         }

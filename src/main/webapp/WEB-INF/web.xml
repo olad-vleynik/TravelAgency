@@ -3,4 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+    <!-- Session Configuration -->
+    <session-config>
+        <!-- Session expires in 28800 minutes (20 days) -->
+        <session-timeout>28800</session-timeout>
+    </session-config>
 </web-app>

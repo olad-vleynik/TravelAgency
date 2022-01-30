@@ -1,20 +1,29 @@
 package com.gmail.vleynik.olad.travelagency.servlet;
 
-import com.gmail.vleynik.olad.travelagency.DAO.UserDAO;
-import com.gmail.vleynik.olad.travelagency.DAO.UserNotFoundException;
-import com.gmail.vleynik.olad.travelagency.DAO.entity.User;
+import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
+import com.gmail.vleynik.olad.travelagency.dao.UserNotFoundException;
+import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private static final String USER_ID = "user_id";
+    private static final String USER_FULL_NAME = "user_full_name";
+    private static final String USER_ACCESS_LEVEL = "user_access_level";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
+
+    private static final String LOGIN_JSP = "login.jsp";
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+        String login = request.getParameter(LOGIN);
+        String password = request.getParameter(PASSWORD);
 
         UserDAO userDAO = new UserDAO();
         User user;
@@ -28,18 +37,16 @@ public class LoginServlet extends HttpServlet {
             if (password.equals(user.getPassword())) {
                 HttpSession session = request.getSession(true);
 
-                // сессия рвется при закрытии вкладки
-                session.setMaxInactiveInterval(-1);
-
-                session.setAttribute("user_full_name", user.getName() + " " + user.getSurname());
-                session.setAttribute("user_id", user.getId());
+                session.setAttribute(USER_FULL_NAME, user.getName() + " " + user.getSurname());
+                session.setAttribute(USER_ID, user.getId());
+                session.setAttribute(USER_ACCESS_LEVEL, user.getAccessLevel());
             } else {
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
             }
             response.sendRedirect(request.getContextPath() + "/");
         } catch (UserNotFoundException e) {
             System.out.println("user not found"); //TODO
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
         }
 
 
@@ -50,13 +57,13 @@ public class LoginServlet extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession(false);
 
-
-        if (session == null || session.getAttribute("user_id") == null || session.getAttribute("user_id").equals("")) {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        if (session == null || session.getAttribute(USER_ID) == null || session.getAttribute(USER_ID).equals("")) {
+            request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
         } else {
-            if ("exit".equals(action)) {
-                session.removeAttribute("user_full_name");
-                session.removeAttribute("user_id");
+            if (action.equals("exit")) {
+                session.removeAttribute(USER_FULL_NAME);
+                session.removeAttribute(USER_ID);
+                session.removeAttribute(USER_ACCESS_LEVEL);
             }
             response.sendRedirect(request.getContextPath() + "/");
         }
