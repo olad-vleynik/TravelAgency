@@ -34,29 +34,25 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public User getById(int id) {
-        try {
-            return getUser(SELECT_BY_ID_USER_QUERY, String.valueOf(id), true);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
-        return new User();
+    public User getById(int id) throws SQLException {
+        return getUser(SELECT_BY_ID_USER_QUERY, String.valueOf(id), true);
     }
 
-    public User getByPhoneNumber(String phoneNumber) throws UserNotFoundException {
+    public User getByPhoneNumber(String phoneNumber) throws SQLException {
         if (phoneNumber.startsWith("0"))
             phoneNumber = "+38" + phoneNumber;
         return getUser(SELECT_BY_PHONE_NUMBER_USER_QUERY, phoneNumber, false);
     }
 
-    public User getByEmail(String email) throws UserNotFoundException {
+    public User getByEmail(String email) throws SQLException {
         return getUser(SELECT_BY_EMAIL_USER_QUERY, email, false);
     }
 
-    private User getUser(String query, String value, boolean isValueInt) throws UserNotFoundException {
+    private User getUser(String query, String value, boolean isValueInt) throws SQLException {
         User user = new User();
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
 
             if (isValueInt)
                 preparedStatement.setInt(1, Integer.parseInt(value));
@@ -64,18 +60,27 @@ public class UserDAO implements DAO<User> {
                 preparedStatement.setString(1, value);
 
             ResultSet rs = preparedStatement.executeQuery();
-            if (!rs.isBeforeFirst())
-                throw new UserNotFoundException();
+            if (!rs.isBeforeFirst()) {
+                user.setId(-1);
+                return user;
+            }
+
             rs.next();
 
-            user = new User(rs.getInt("id"),  rs.getString("name"),  rs.getString("surname"),
-                    rs.getString("phoneNumber"),  rs.getString("email"),  rs.getString("password"),
-                    rs.getDate("birthDay"),  rs.getDouble("balanceInUSD"),  rs.getDouble("personalDiscount"),
-                    rs.getDouble("maxDiscount"), rs.getBoolean("isBanned"), User.AccessLevel.valueOf(rs.getString("accessLevel")));
-        } catch (UserNotFoundException e) {
-            throw e;
-        } catch (SQLException e) {
-            e.printStackTrace();
+            user = new User.Builder()
+                    .setId(rs.getInt("id"))
+                    .setName(rs.getString("name"))
+                    .setSurname(rs.getString("surname"))
+                    .setPhoneNumber(rs.getString("phoneNumber"))
+                    .setEmail(rs.getString("email"))
+                    .setPassword(rs.getString("password"))
+                    .setBirthDay(rs.getDate("birthDay"))
+                    .setBalanceInUSD(rs.getDouble("balanceInUSD"))
+                    .setPersonalDiscount(rs.getDouble("personalDiscount"))
+                    .setMaxDiscount(rs.getDouble("maxDiscount"))
+                    .setBanned(rs.getBoolean("isBanned"))
+                    .setAccessLevel(User.AccessLevel.valueOf(rs.getString("accessLevel")))
+                    .build();
         }
         return user;
     }

@@ -21,7 +21,7 @@ public class ConnectionUtil {
     private static BasicDataSource dataSource;
 
     /**
-     * Private constructor excludes creation of utility class
+     * Private constructor excludes creation object of utility class
      *
      * @throws IllegalStateException on calling
      */

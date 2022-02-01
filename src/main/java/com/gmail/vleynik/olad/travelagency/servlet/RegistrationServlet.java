@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -35,29 +36,34 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email");
 
 
-        if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
-            newUser = new User();
-            userDAO = new UserDAO();
-            newUser.setName(name);
-            newUser.setSurname(surname);
-            newUser.setPhoneNumber(phoneNumber);
-            newUser.setEmail(email);
-            newUser.setPassword(password);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                newUser.setBirthDay(sdf.parse(request.getParameter("birthday")));
-            } catch (ParseException e) {
-                e.printStackTrace();
+        try {
+            if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
+                newUser = new User();
+                userDAO = new UserDAO();
+                newUser.setName(name);
+                newUser.setSurname(surname);
+                newUser.setPhoneNumber(phoneNumber);
+                newUser.setEmail(email);
+                newUser.setPassword(password);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    newUser.setBirthDay(sdf.parse(request.getParameter("birthday")));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                newUser.setId(userDAO.addNew(newUser));
+
+                session.setAttribute(USER_ID, newUser.getId());
+                session.setAttribute(USER_ACCESS_LEVEL, newUser.getAccessLevel());
+                session.setAttribute(USER_FULL_NAME, newUser.getName() + " " + newUser.getSurname());
+
+                response.sendRedirect(request.getContextPath() + "/");
+            } else {
+                request.getRequestDispatcher(REGISTER_JSP).forward(request, response);
             }
-            newUser.setId(userDAO.addNew(newUser));
-
-            session.setAttribute(USER_ID, newUser.getId());
-            session.setAttribute(USER_ACCESS_LEVEL, newUser.getAccessLevel());
-            session.setAttribute(USER_FULL_NAME, newUser.getName() + " " + newUser.getSurname());
-
-            response.sendRedirect(request.getContextPath() + "/");
-        } else {
-            request.getRequestDispatcher(REGISTER_JSP).forward(request, response);
+        } catch (SQLException e) {
+            //TODO logger
+            response.sendError(503);
         }
     }
 

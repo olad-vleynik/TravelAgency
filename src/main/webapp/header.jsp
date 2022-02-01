@@ -6,4 +6,4 @@
 <% } else { %>
 <p align="right"><%= user_full_name %> | <a href="/login?action=exit">logout</a></p>
 <% } %>
-<h1><%= "Travel Agency" %></h1>
+<h1>Travel Agency</h1>

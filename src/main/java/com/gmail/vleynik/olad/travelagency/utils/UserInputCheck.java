@@ -1,8 +1,9 @@
 package com.gmail.vleynik.olad.travelagency.utils;
 
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
-import com.gmail.vleynik.olad.travelagency.dao.UserNotFoundException;
+import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,14 +43,14 @@ public class UserInputCheck {
     /**
      * Method validates input data by specific rules and checks uniqueness of phone number and e-mail
      *
-     * @param email - email check in {@link UserInputCheck#checkEmail}
+     * @param email       - email check in {@link UserInputCheck#checkEmail}
      * @param phoneNumber - phone check in {@link UserInputCheck#checkPhoneNumber}
-     * @param password - password check in {@link UserInputCheck#checkPassword}
-     * @param name - name check in {@link UserInputCheck#checkName}
-     * @param surname - surname check in {@link UserInputCheck#checkName}
+     * @param password    - password check in {@link UserInputCheck#checkPassword}
+     * @param name        - name check in {@link UserInputCheck#checkName}
+     * @param surname     - surname check in {@link UserInputCheck#checkName}
      * @return true if entered data is correct and unique, or false if something is not correct or not unique
      */
-    public static boolean isValidAndNotDuplicate(String email, String phoneNumber, String password, String name, String surname) {
+    public static boolean isValidAndNotDuplicate(String email, String phoneNumber, String password, String name, String surname) throws SQLException {
         return checkEmail(email).equals("") && checkPhoneNumber(phoneNumber).equals("")
                 && checkPassword(password).equals("") && checkName(name).equals("") && checkName(surname).equals("");
     }
@@ -60,10 +61,10 @@ public class UserInputCheck {
      *
      * @param email - email to check
      * @return "" if e-mail is valid and unique, or
-     *         {@link UserInputCheck#EMAIL_DUPLICATE} if user with such e=mail already exists, or
-     *         {@link UserInputCheck#EMAIL_INVALID} if entered e-mail is incorrect
+     * {@link UserInputCheck#EMAIL_DUPLICATE} if user with such e=mail already exists, or
+     * {@link UserInputCheck#EMAIL_INVALID} if entered e-mail is incorrect
      */
-    public static String checkEmail(String email) {
+    public static String checkEmail(String email) throws SQLException {
         if (email == null)
             return "";
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
@@ -84,10 +85,10 @@ public class UserInputCheck {
      *
      * @param phoneNumber - phone number to check
      * @return "" if phone number is valid and unique, or
-     *         {@link UserInputCheck#PHONE_NUMBER_DUPLICATE} if user with such phone number already exists, or
-     *         {@link UserInputCheck#PHONE_NUMBER_INVALID} if entered phone number is incorrect
+     * {@link UserInputCheck#PHONE_NUMBER_DUPLICATE} if user with such phone number already exists, or
+     * {@link UserInputCheck#PHONE_NUMBER_INVALID} if entered phone number is incorrect
      */
-    public static String checkPhoneNumber(String phoneNumber) {
+    public static String checkPhoneNumber(String phoneNumber) throws SQLException {
         if (phoneNumber == null)
             return "";
         Matcher matcher = VALID_PHONE_NUMBER_REGEX.matcher(phoneNumber);
@@ -108,7 +109,7 @@ public class UserInputCheck {
      *
      * @param password - password to check
      * @return "" if password is correct, or
-     *         {@link UserInputCheck#PASSWORD_TOO_SHORT} if password is too short
+     * {@link UserInputCheck#PASSWORD_TOO_SHORT} if password is too short
      */
     public static String checkPassword(String password) {
         if (password == null || password.length() >= MIN_PASSWORD_LENGTH)
@@ -122,7 +123,7 @@ public class UserInputCheck {
      *
      * @param name - name or surname to check
      * @return "" if name (or surname) is correct, or
-     *         {@link UserInputCheck#NAME_INVALID} if incorrect
+     * {@link UserInputCheck#NAME_INVALID} if incorrect
      */
     public static String checkName(String name) {
         if (name == null || VALID_NAME_REGEX.matcher(name).find()) {
@@ -135,27 +136,24 @@ public class UserInputCheck {
      * Method is email or phone number unique in database
      *
      * @param checkable - value needed to check
-     * @param value - type of checkable value
-     *              ("email" or "phoneNumber", otherwise {@link IllegalArgumentException} will be thrown)
+     * @param value     - type of checkable value
+     *                  ("email" or "phoneNumber", otherwise {@link IllegalArgumentException} will be thrown)
      * @return true if checked value is unique in database, or false if not
      * @throws IllegalArgumentException if method called with incorrect "value" parameter (not "email" or "phoneNumber")
      */
-    private static boolean notDuplicate(String checkable, String value) {
+    private static boolean notDuplicate(String checkable, String value) throws SQLException {
+        User user;
         UserDAO userDAO = new UserDAO();
-        try {
-            switch (checkable) {
-                case "email":
-                    userDAO.getByEmail(value);
-                    break;
-                case "phoneNumber":
-                    userDAO.getByPhoneNumber(value);
-                    break;
-                default:
-                    throw new IllegalArgumentException();
-            }
-            return false;
-        } catch (UserNotFoundException e) {
-            return true;
+        switch (checkable) {
+            case "email":
+                user = userDAO.getByEmail(value);
+                break;
+            case "phoneNumber":
+                user = userDAO.getByPhoneNumber(value);
+                break;
+            default:
+                throw new IllegalArgumentException();
         }
+        return user.getId() == -1;
     }
 }

@@ -1,5 +1,7 @@
 package com.gmail.vleynik.olad.travelagency.dao;
 
+import java.sql.SQLException;
+
 /**
  * Interface with CRUD methods
  *
@@ -8,7 +10,7 @@ package com.gmail.vleynik.olad.travelagency.dao;
  */
 public interface DAO<T> {
     int addNew(T t);
-    T getById(int id);
+    T getById(int id) throws SQLException;
     void update(T t, String[] params);
     void delete(int id);
 }

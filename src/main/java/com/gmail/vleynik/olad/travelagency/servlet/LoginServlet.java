@@ -1,11 +1,10 @@
 package com.gmail.vleynik.olad.travelagency.servlet;
 
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
-import com.gmail.vleynik.olad.travelagency.dao.UserNotFoundException;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -34,19 +33,20 @@ public class LoginServlet extends HttpServlet {
             else
                 user = userDAO.getByPhoneNumber(login);
 
-            if (password.equals(user.getPassword())) {
+            if (user.getId() != -1 && password.equals(user.getPassword())) {
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute(USER_FULL_NAME, user.getName() + " " + user.getSurname());
                 session.setAttribute(USER_ID, user.getId());
                 session.setAttribute(USER_ACCESS_LEVEL, user.getAccessLevel());
+
+                response.sendRedirect(request.getContextPath() + "/");
             } else {
                 request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
             }
-            response.sendRedirect(request.getContextPath() + "/");
-        } catch (UserNotFoundException e) {
-            System.out.println("user not found"); //TODO
-            request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
+        } catch (SQLException e) {
+            //TODO logger
+            response.sendError(503);
         }
 
 
