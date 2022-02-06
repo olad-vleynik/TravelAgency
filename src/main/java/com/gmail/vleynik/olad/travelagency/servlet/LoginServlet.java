@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
 
-    private static final String LOGIN_JSP = "login.jsp";
+    private static final String LOGIN_JSP = "entry.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute(USER_ID) == null || session.getAttribute(USER_ID).equals("")) {
+        if (session == null || session.getAttribute(USER_ID) == null || session.getAttribute(USER_ID).equals("") || action == null) {
             request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
         } else {
             if (action.equals("exit")) {

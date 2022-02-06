@@ -35,6 +35,8 @@ public class RegistrationServlet extends HttpServlet {
         String surname = request.getParameter("surname");
         String email = request.getParameter("email");
 
+        System.out.println(request.getParameter("birthday"));
+
 
         try {
             if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
@@ -45,7 +47,7 @@ public class RegistrationServlet extends HttpServlet {
                 newUser.setPhoneNumber(phoneNumber);
                 newUser.setEmail(email);
                 newUser.setPassword(password);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 try {
                     newUser.setBirthDay(sdf.parse(request.getParameter("birthday")));
                 } catch (ParseException e) {
@@ -68,12 +70,7 @@ public class RegistrationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession(true);
-        if (session.getAttribute(USER_ID) == null || session.getAttribute(USER_ID).equals("")) {
-            request.getRequestDispatcher(REGISTER_JSP).forward(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/");
-        }
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("omg");
     }
 }

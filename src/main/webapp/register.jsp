@@ -10,15 +10,10 @@
 <br><br>
 <form action="/register" method="POST">
     Name: <input type="text" name="name" value="">
-    <%=UserInputCheck.checkName(request.getParameter("name"))%><br>
     Surname: <input type="text" name="surname">
-    <%=UserInputCheck.checkName(request.getParameter("surname"))%><br>
     Phone number: <input type="text" name="phoneNumber">
-    <%=UserInputCheck.checkPhoneNumber(request.getParameter("phoneNumber"))%><br>
     E-Mail: <input type="text" name="email">
-    <%=UserInputCheck.checkEmail(request.getParameter("email"))%><br>
     Password: <input type="password" name="password">
-    <%=UserInputCheck.checkPassword(request.getParameter("password"))%><br>
     Date of birth: <input type="date" name="birthday"><br>
     <input type="submit"/>
 </form>

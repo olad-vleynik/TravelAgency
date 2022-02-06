@@ -16,14 +16,7 @@ import java.util.regex.Pattern;
 public class UserInputCheck {
 
     private static final int MIN_PASSWORD_LENGTH = 5;
-
-    private static final String EMAIL_DUPLICATE = "такой e-mail уже зарегистрирован";
-    private static final String EMAIL_INVALID = "некорректный e-mail";
-    private static final String PHONE_NUMBER_DUPLICATE = "такой номер уже зарегистрирован";
-    private static final String PHONE_NUMBER_INVALID = "некорректный номер (пример ввода: +380993332211, 0993332211)";
-    private static final String PASSWORD_TOO_SHORT = "пароль слишком короткий (минимум " + MIN_PASSWORD_LENGTH + " символов)";
-    private static final String NAME_INVALID = "некорректный ввод";
-
+    
     /**
      * Private constructor excludes creation of utility class outside
      *
@@ -34,7 +27,7 @@ public class UserInputCheck {
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^[a-zA-Z0-9]+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
     public static final Pattern VALID_PHONE_NUMBER_REGEX =
             Pattern.compile("^(\\+38)?0(67|68|96|97|98|50|66|95|99|63|73|93)\\d{7}$");
     public static final Pattern VALID_NAME_REGEX =
@@ -43,16 +36,16 @@ public class UserInputCheck {
     /**
      * Method validates input data by specific rules and checks uniqueness of phone number and e-mail
      *
-     * @param email       - email check in {@link UserInputCheck#checkEmail}
-     * @param phoneNumber - phone check in {@link UserInputCheck#checkPhoneNumber}
-     * @param password    - password check in {@link UserInputCheck#checkPassword}
-     * @param name        - name check in {@link UserInputCheck#checkName}
-     * @param surname     - surname check in {@link UserInputCheck#checkName}
+     * @param email       - email check in {@link UserInputCheck#validEmail}
+     * @param phoneNumber - phone check in {@link UserInputCheck#validPhoneNumber}
+     * @param password    - password check in {@link UserInputCheck#validPassword}
+     * @param name        - name check in {@link UserInputCheck#validName}
+     * @param surname     - surname check in {@link UserInputCheck#validName}
      * @return true if entered data is correct and unique, or false if something is not correct or not unique
      */
     public static boolean isValidAndNotDuplicate(String email, String phoneNumber, String password, String name, String surname) throws SQLException {
-        return checkEmail(email).equals("") && checkPhoneNumber(phoneNumber).equals("")
-                && checkPassword(password).equals("") && checkName(name).equals("") && checkName(surname).equals("");
+        return validEmail(email) && validPhoneNumber(phoneNumber)
+                && validPassword(password) && validName(name) && validName(surname);
     }
 
     /**
@@ -60,23 +53,12 @@ public class UserInputCheck {
      * and user with such e-mail is not present in the database
      *
      * @param email - email to check
-     * @return "" if e-mail is valid and unique, or
-     * {@link UserInputCheck#EMAIL_DUPLICATE} if user with such e=mail already exists, or
-     * {@link UserInputCheck#EMAIL_INVALID} if entered e-mail is incorrect
+     * @return true if e-mail is valid and unique, or false if not
      */
-    public static String checkEmail(String email) throws SQLException {
-        if (email == null)
-            return "";
+    public static boolean validEmail(String email) throws SQLException {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        if (matcher.find()) {
-            if (notDuplicate("email", email)) {
-                return "";
-            } else {
-                return EMAIL_DUPLICATE;
-            }
-        } else {
-            return EMAIL_INVALID;
-        }
+
+        return matcher.find() && notDuplicate("email", email);
     }
 
     /**
@@ -84,37 +66,22 @@ public class UserInputCheck {
      * and user with such phone number is not present in the database
      *
      * @param phoneNumber - phone number to check
-     * @return "" if phone number is valid and unique, or
-     * {@link UserInputCheck#PHONE_NUMBER_DUPLICATE} if user with such phone number already exists, or
-     * {@link UserInputCheck#PHONE_NUMBER_INVALID} if entered phone number is incorrect
+     * @return  true if phone number is valid and unique, or false if not
      */
-    public static String checkPhoneNumber(String phoneNumber) throws SQLException {
-        if (phoneNumber == null)
-            return "";
+    public static boolean validPhoneNumber(String phoneNumber) throws SQLException {
         Matcher matcher = VALID_PHONE_NUMBER_REGEX.matcher(phoneNumber);
-        if (matcher.find()) {
-            if (phoneNumber.startsWith("0"))
-                phoneNumber = "+38" + phoneNumber;
-            if (notDuplicate("phoneNumber", phoneNumber))
-                return "";
-            else
-                return PHONE_NUMBER_DUPLICATE;
-        } else {
-            return PHONE_NUMBER_INVALID;
-        }
+
+        return matcher.find() && notDuplicate("phoneNumber", phoneNumber);
     }
 
     /**
      * Method checks that password is not shorter than {@link UserInputCheck#MIN_PASSWORD_LENGTH}
      *
      * @param password - password to check
-     * @return "" if password is correct, or
-     * {@link UserInputCheck#PASSWORD_TOO_SHORT} if password is too short
+     * @return true if password is correct, or password is too short
      */
-    public static String checkPassword(String password) {
-        if (password == null || password.length() >= MIN_PASSWORD_LENGTH)
-            return "";
-        return PASSWORD_TOO_SHORT;
+    public static boolean validPassword(String password) {
+        return password.length() >= MIN_PASSWORD_LENGTH;
     }
 
     /**
@@ -122,14 +89,12 @@ public class UserInputCheck {
      * regex - {@link UserInputCheck#VALID_NAME_REGEX}
      *
      * @param name - name or surname to check
-     * @return "" if name (or surname) is correct, or
-     * {@link UserInputCheck#NAME_INVALID} if incorrect
+     * @return true if name (or surname) is correct, or false if not
      */
-    public static String checkName(String name) {
-        if (name == null || VALID_NAME_REGEX.matcher(name).find()) {
-            return "";
-        }
-        return NAME_INVALID;
+    public static boolean validName(String name) {
+        Matcher matcher = VALID_NAME_REGEX.matcher(name);
+
+        return matcher.find();
     }
 
     /**
@@ -149,6 +114,8 @@ public class UserInputCheck {
                 user = userDAO.getByEmail(value);
                 break;
             case "phoneNumber":
+                if (value.startsWith("0"))
+                    value = "+38" + value;
                 user = userDAO.getByPhoneNumber(value);
                 break;
             default:
