@@ -27,11 +27,11 @@ public class UserInputCheck {
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[a-zA-Z0-9]+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+            Pattern.compile("^[a-zA-Z0-9]+[._-]?[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
     public static final Pattern VALID_PHONE_NUMBER_REGEX =
             Pattern.compile("^(\\+38)?0(67|68|96|97|98|50|66|95|99|63|73|93)\\d{7}$");
     public static final Pattern VALID_NAME_REGEX =
-            Pattern.compile("^[A-Z][a-z]+$");
+            Pattern.compile("^(([А-Я][а-я]{1,39})|([A-Z][a-z]{1,39}))$");
 
     /**
      * Method validates input data by specific rules and checks uniqueness of phone number and e-mail
@@ -58,7 +58,7 @@ public class UserInputCheck {
     public static boolean validEmail(String email) throws SQLException {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
 
-        return matcher.find() && notDuplicate("email", email);
+        return email.length() <= 40 && matcher.find() && notDuplicate("email", email);
     }
 
     /**

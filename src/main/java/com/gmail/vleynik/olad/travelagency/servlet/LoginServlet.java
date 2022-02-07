@@ -5,12 +5,19 @@ import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
+import com.gmail.vleynik.olad.travelagency.utils.PasswordHashUtil;
+import org.apache.log4j.Logger;
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    private static final Logger log = Logger.getLogger(LoginServlet.class);
+
     private static final String USER_ID = "user_id";
     private static final String USER_FULL_NAME = "user_full_name";
     private static final String USER_ACCESS_LEVEL = "user_access_level";
@@ -29,11 +36,11 @@ public class LoginServlet extends HttpServlet {
 
         try {
             if (login.contains("@"))
-                user = userDAO.getByEmail(login);
+                user = userDAO.getByEmail(login.toLowerCase());
             else
                 user = userDAO.getByPhoneNumber(login);
 
-            if (user.getId() != -1 && password.equals(user.getPassword())) {
+            if (user.getId() != -1 && isPasswordSame(user.getPassword(), password) ) {
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute(USER_FULL_NAME, user.getName() + " " + user.getSurname());
@@ -45,11 +52,9 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
             }
         } catch (SQLException e) {
-            //TODO logger
+            log.fatal("something wrong with database");
             response.sendError(503);
         }
-
-
     }
 
     @Override
@@ -67,5 +72,11 @@ public class LoginServlet extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/");
         }
+    }
+
+    private static boolean isPasswordSame(String userPassword, String enteredPassword){
+        byte[] userPasswordSalt = Base64.getDecoder().decode(userPassword.substring(0, 24));
+        String enteredPasswordHash = PasswordHashUtil.getHash(enteredPassword, userPasswordSalt);
+        return enteredPasswordHash.equals(userPassword.substring(24));
     }
 }

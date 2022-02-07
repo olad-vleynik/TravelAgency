@@ -1,8 +1,12 @@
 package com.gmail.vleynik.olad.travelagency.dao.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Tour {
+public class Tour implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private State state;
     private boolean isHot;

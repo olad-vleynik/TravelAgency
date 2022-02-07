@@ -120,7 +120,6 @@
                             <p class="text-center">Don't have account? <a href="#" id="signup">Sign up here</a></p>
                         </div>
                     </form>
-
                 </div>
             </div>
             <div id="second">
@@ -145,7 +144,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email address</label>
-                            <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                            <input type="text" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
@@ -198,7 +197,7 @@
 
                 login: {
                     required: true,
-                    regex:/(^(\+38)?0(67|68|96|97|98|50|66|95|99|63|73|93)\d{7}$)|(^[a-zA-Z0-9]+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$)/
+                    regex:/(^(\+38)?0(67|68|96|97|98|50|66|95|99|63|73|93)\d{7}$)|(^[a-zA-Z0-9]+[._-]?[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$)/
                 },
                 password: {
                     required: true
@@ -222,11 +221,11 @@
             rules: {
                 name: {
                     required: true,
-                    regex:/^[A-Z][a-z]+$/
+                    regex:/^(([А-Я][а-я]{1,39})|([A-Z][a-z]{1,39}))$/
                 },
                 surname: {
                     required: true,
-                    regex:/^[A-Z][a-z]+$/
+                    regex:/^(([А-Я][а-я]{1,39})|([A-Z][a-z]{1,39}))$/
                 },
                 phoneNumber: {
                     required: true,
@@ -234,7 +233,8 @@
                 },
                 email: {
                     required: true,
-                    email: true
+                    regex:/^[a-zA-Z0-9]+[._-]?[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                    maxlength: 40
                 },
                 password: {
                     required: true,
@@ -247,7 +247,7 @@
 
             messages: {
                 name: "Please enter your firstname",
-                lastname: "Please enter your lastname",
+                surname: "Please enter your surname",
                 password: {
                     required: "Please provide a password",
                     minlength: "Your password must be at least 5 characters long"
@@ -258,7 +258,14 @@
             },
 
             submitHandler: function(form) {
+                form.method = "POST";
+                form.action = "/register";
                 form.submit();
+                // $.ajax({
+                //     url: "/register",
+                //     type: "POST",
+                //     data: $(form)
+                // })
             }
         });
     });

@@ -7,11 +7,11 @@ USE travel_agency;
 CREATE TABLE users
 (
     id               INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name             VARCHAR(128) NOT NULL,
-    surname          VARCHAR(128) NOT NULL,
+    name             VARCHAR(40) NOT NULL,
+    surname          VARCHAR(40) NOT NULL,
     phoneNumber      VARCHAR(13)  NOT NULL,
-    email            VARCHAR(128) NOT NULL,
-    password         VARCHAR(128) NOT NULL,
+    email            VARCHAR(40) NOT NULL,
+    password         VARCHAR(150) NOT NULL,
     birthDay         DATE                                        DEFAULT NULL,
     balanceInUSD     DOUBLE                                      DEFAULT 0,
     personalDiscount DOUBLE                                      DEFAULT 0,

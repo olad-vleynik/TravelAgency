@@ -1,1 +1,1 @@
-INSERT INTO users VALUES (DEFAULT, 'Владислав', 'Олейник', '+380968054573', 'olad.vleynik@gmail.com', 'password', '1997-04-11T10:00:09', 10000, DEFAULT, DEFAULT, DEFAULT, 'ADMINISTRATOR');
+INSERT INTO users VALUES (DEFAULT, 'Владислав', 'Олейник', '+380968054573', 'olad.vleynik@gmail.com', 'ZfTmZ7+tYnNTNX4LjQzazw==zVX2OP0UfOlGq+E3Xo9ArWW5tSPMuKehi9tOqouEs42T/ZoMYdAhDJqlJ3FGrHdli/FSYJ7JFso9BPO+LgSGvA==', '1997-04-11T10:00:09', 10000, DEFAULT, DEFAULT, DEFAULT, 'ADMINISTRATOR');
