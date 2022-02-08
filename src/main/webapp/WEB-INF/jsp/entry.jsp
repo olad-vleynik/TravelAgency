@@ -5,7 +5,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="en">
 <head>
-    <fmt:setLocale value="ru"/>
+    <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="dictionaries"/>
     <meta charset="utf-8">
     <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
@@ -132,7 +132,7 @@
                 <div class="myform form ">
                     <div class="logo mb-3">
                         <div class="col-md-12 text-center">
-                            <h1 ><fmt:message key="sign.up"/></h1>
+                            <h1 ><fmt:message key="registration"/></h1>
                         </div>
                     </div>
                     <form action="#" name="register">

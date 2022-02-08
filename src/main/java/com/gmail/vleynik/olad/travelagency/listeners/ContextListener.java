@@ -9,6 +9,12 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.io.IOException;
 
+/**
+ * Used to log context state and initialize database connection pool
+ *
+ * @author Vladyslav Oliinyk.
+ * @version 1.0
+ */
 @WebListener
 public class ContextListener implements ServletContextListener {
 

@@ -3,20 +3,20 @@ package com.gmail.vleynik.olad.travelagency.filters;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Locale;
 
+/**
+ * Used to set encoding
+ *
+ * @author Vladyslav Oliinyk.
+ * @version 1.0
+ */
 @WebFilter("/*")
 public class EncodingFilter implements Filter {
     private static final String ENCODING = "UTF-8";
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain next)
             throws IOException, ServletException {
-        Enumeration locales = request.getLocales();
-        while (locales.hasMoreElements()) {
-            Locale locale = (Locale) locales.nextElement();
-            //TODO
-        }
+
         if (null == request.getCharacterEncoding()) {
             request.setCharacterEncoding(ENCODING);
         }
