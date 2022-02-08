@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.travelagency.servlet;
+package com.gmail.vleynik.olad.travelagency.servlets;
 
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
 
-    private static final String LOGIN_JSP = "entry.jsp";
+    private static final String LOGIN_JSP = "/WEB-INF/jsp/entry.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -49,6 +49,8 @@ public class LoginServlet extends HttpServlet {
 
                 response.sendRedirect(request.getContextPath() + "/");
             } else {
+                log.warn("client " + request.getRemoteAddr() + " login fail. Login: " + login + " Reason: Incorrect password");
+                request.setAttribute("errorMessage", "incorrect.login.password");
                 request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
             }
         } catch (SQLException e) {

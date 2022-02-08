@@ -18,6 +18,7 @@ public class Tour implements Serializable {
     private int maxPersons;
     private int hotelRating;
     private String info;
+    private String name;
 
     public enum TourType {
         RELAX,

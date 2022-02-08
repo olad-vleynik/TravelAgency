@@ -1,6 +1,7 @@
 package com.gmail.vleynik.olad.travelagency.dao;
 
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
+import com.gmail.vleynik.olad.travelagency.dao.entity.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 
 import java.sql.*;
@@ -67,14 +68,9 @@ public class UserDAO implements DAO<User> {
 
             rs.next();
 
-            user = new User.Builder()
-                    .setId(rs.getInt("id"))
-                    .setName(rs.getString("name"))
-                    .setSurname(rs.getString("surname"))
-                    .setPhoneNumber(rs.getString("phoneNumber"))
-                    .setEmail(rs.getString("email"))
-                    .setPassword(rs.getString("password"))
-                    .setBirthDay(rs.getDate("birthDay"))
+            user = new UserBuilder(rs.getInt("id"), rs.getString("name"),
+                    rs.getString("surname"), rs.getString("phoneNumber"),
+                    rs.getString("email"), rs.getString("password"), rs.getDate("birthDay"))
                     .setBalanceInUSD(rs.getDouble("balanceInUSD"))
                     .setPersonalDiscount(rs.getDouble("personalDiscount"))
                     .setMaxDiscount(rs.getDouble("maxDiscount"))

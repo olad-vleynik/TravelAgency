@@ -114,8 +114,6 @@ public class UserInputCheck {
                 user = userDAO.getByEmail(value);
                 break;
             case "phoneNumber":
-                if (value.startsWith("0"))
-                    value = "+38" + value;
                 user = userDAO.getByPhoneNumber(value);
                 break;
             default:

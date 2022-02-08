@@ -32,7 +32,8 @@ CREATE TABLE tours
     minPersons INT DEFAULT 1,
     maxPersons INT DEFAULT 1,
     hotelRating INT NOT NULL,
-    info VARCHAR(1000)
+    info VARCHAR(1000),
+    name VARCHAR(20)
 );
 
 CREATE TABLE orders

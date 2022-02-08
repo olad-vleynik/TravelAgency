@@ -1,7 +1,8 @@
-package com.gmail.vleynik.olad.travelagency.servlet;
+package com.gmail.vleynik.olad.travelagency.servlets;
 
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
+import com.gmail.vleynik.olad.travelagency.dao.entity.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.utils.PasswordHashUtil;
 import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
 
@@ -16,7 +17,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
-import java.util.Locale;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
@@ -24,7 +24,7 @@ public class RegistrationServlet extends HttpServlet {
     private static final String USER_FULL_NAME = "user_full_name";
     private static final String USER_ACCESS_LEVEL = "user_access_level";
 
-    private static final String ENTRY_JSP = "entry.jsp";
+    private static final String ENTRY_JSP = "/WEB-INF/jsp/entry.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -33,31 +33,25 @@ public class RegistrationServlet extends HttpServlet {
         UserDAO userDAO;
 
         String phoneNumber = request.getParameter("phoneNumber");
+        if (phoneNumber.startsWith("0"))
+            phoneNumber = "+38" + phoneNumber;
         String password = request.getParameter("password");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email").toLowerCase();
         String birthday = request.getParameter("birthday");
-
         try {
             if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
-                newUser = new User();
                 userDAO = new UserDAO();
-                newUser.setName(name);
-                newUser.setSurname(surname);
-                newUser.setPhoneNumber(phoneNumber);
-                newUser.setEmail(email);
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
                 byte[] passwordSalt = PasswordHashUtil.getSalt();
                 String hashedPassword = PasswordHashUtil.getHash(password, passwordSalt);
-                newUser.setPassword(Base64.getEncoder().encodeToString(passwordSalt) + hashedPassword);
+                String saltAndPassword = Base64.getEncoder().encodeToString(passwordSalt) + hashedPassword;
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                try {
-                    newUser.setBirthDay(sdf.parse(birthday));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                newUser = new UserBuilder(-2, name, surname, phoneNumber, email, saltAndPassword, sdf.parse(birthday))
+                        .build();
+
                 newUser.setId(userDAO.addNew(newUser));
 
                 session.setAttribute(USER_ID, newUser.getId());
@@ -66,8 +60,8 @@ public class RegistrationServlet extends HttpServlet {
 
                 response.sendRedirect(request.getContextPath() + "/");
             } else {
+                request.setAttribute("errorMessage", "duplicate.email.or.phone");
                 request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
-                //TODO ошибка в форме, вместо forward
             }
         } catch (SQLException e) {
             //TODO logger
@@ -75,6 +69,9 @@ public class RegistrationServlet extends HttpServlet {
         } catch (RuntimeException e) {
             //TODO logger
             response.sendError(503);
+        } catch (ParseException e) {
+            //TODO date parse
+            e.printStackTrace();
         }
     }
 

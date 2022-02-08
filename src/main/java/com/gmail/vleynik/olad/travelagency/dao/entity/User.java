@@ -22,7 +22,6 @@ public class User implements Serializable {
 
     private boolean isBanned;
     private AccessLevel accessLevel;
-    //private Language lang;
 
     public User() {
     }
@@ -175,90 +174,5 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, surname, phoneNumber, email, password, birthDay, balanceInUSD, personalDiscount, maxDiscount, isBanned, accessLevel);
-    }
-
-    public static class Builder {
-        private int id;
-        private String name;
-        private String surname;
-        private String phoneNumber;
-        private String email;
-        private String password;
-        private Date birthDay;
-
-        private double balanceInUSD = 0;
-        private double personalDiscount = 0;
-        private double maxDiscount = 20;
-
-        private boolean isBanned = false;
-        private AccessLevel accessLevel = AccessLevel.CLIENT;
-
-        public Builder() {
-        }
-
-        public Builder setId(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder setSurname(String surname) {
-            this.surname = surname;
-            return this;
-        }
-
-        public Builder setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-            return this;
-        }
-
-        public Builder setEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder setPassword(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder setBirthDay(Date birthDay) {
-            this.birthDay = birthDay;
-            return this;
-        }
-
-        public Builder setBalanceInUSD(double balanceInUSD) {
-            this.balanceInUSD = balanceInUSD;
-            return this;
-        }
-
-        public Builder setPersonalDiscount(double personalDiscount) {
-            this.personalDiscount = personalDiscount;
-            return this;
-        }
-
-        public Builder setMaxDiscount(double maxDiscount) {
-            this.maxDiscount = maxDiscount;
-            return this;
-        }
-
-        public Builder setBanned(boolean isBanned) {
-            this.isBanned = isBanned;
-            return this;
-        }
-
-        public Builder setAccessLevel(AccessLevel accessLevel) {
-            this.accessLevel = accessLevel;
-            return this;
-        }
-
-        public User build() {
-            return new User(id, name, surname, phoneNumber, email, password, birthDay, balanceInUSD, personalDiscount,
-                    maxDiscount, isBanned, accessLevel);
-        }
     }
 }
