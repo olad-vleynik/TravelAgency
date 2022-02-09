@@ -5,12 +5,11 @@ import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-import com.gmail.vleynik.olad.travelagency.utils.PasswordHashUtil;
+import com.gmail.vleynik.olad.travelagency.utils.PasswordUtil;
 import org.apache.log4j.Logger;
 
 @WebServlet("/login")
@@ -24,7 +23,7 @@ public class LoginServlet extends HttpServlet {
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
 
-    private static final String LOGIN_JSP = "/WEB-INF/jsp/entry.jsp";
+    private static final String ENTRY_JSP = "/WEB-INF/jsp/entry.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -40,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             else
                 user = userDAO.getByPhoneNumber(login);
 
-            if (user.getId() != -1 && isPasswordSame(user.getPassword(), password) ) {
+            if (user.getId() != -1 && PasswordUtil.isPasswordCorrect(user.getPassword(), password) ) {
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute(USER_FULL_NAME, user.getName() + " " + user.getSurname());
@@ -51,7 +50,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 log.warn("client " + request.getRemoteAddr() + " login fail. Login: " + login + " Reason: Incorrect password");
                 request.setAttribute("errorMessage", "incorrect.login.password");
-                request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
+                request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
             }
         } catch (SQLException e) {
             log.fatal("something wrong with database");
@@ -65,7 +64,8 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute(USER_ID) == null || session.getAttribute(USER_ID).equals("") || action == null) {
-            request.getRequestDispatcher(LOGIN_JSP).forward(request, response);
+            request.setAttribute("action", "login");
+            request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
         } else {
             if (action.equals("exit")) {
                 session.removeAttribute(USER_FULL_NAME);
@@ -74,11 +74,5 @@ public class LoginServlet extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/");
         }
-    }
-
-    private static boolean isPasswordSame(String userPassword, String enteredPassword){
-        byte[] userPasswordSalt = Base64.getDecoder().decode(userPassword.substring(0, 24));
-        String enteredPasswordHash = PasswordHashUtil.getHash(enteredPassword, userPasswordSalt);
-        return enteredPasswordHash.equals(userPassword.substring(24));
     }
 }

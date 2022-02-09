@@ -3,7 +3,7 @@ package com.gmail.vleynik.olad.travelagency.servlets;
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 import com.gmail.vleynik.olad.travelagency.dao.entity.UserBuilder;
-import com.gmail.vleynik.olad.travelagency.utils.PasswordHashUtil;
+import com.gmail.vleynik.olad.travelagency.utils.PasswordUtil;
 import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
 
 import javax.servlet.ServletException;
@@ -45,8 +45,8 @@ public class RegistrationServlet extends HttpServlet {
                 userDAO = new UserDAO();
                 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
-                byte[] passwordSalt = PasswordHashUtil.getSalt();
-                String hashedPassword = PasswordHashUtil.getHash(password, passwordSalt);
+                byte[] passwordSalt = PasswordUtil.getSalt();
+                String hashedPassword = PasswordUtil.getHash(password, passwordSalt);
                 String saltAndPassword = Base64.getEncoder().encodeToString(passwordSalt) + hashedPassword;
 
                 newUser = new UserBuilder(-2, name, surname, phoneNumber, email, saltAndPassword, sdf.parse(birthday))
@@ -76,7 +76,15 @@ public class RegistrationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("omg");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute(USER_ID) == null || session.getAttribute(USER_ID).equals("")) {
+            request.setAttribute("action", "registration");
+            request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/");
+        }
     }
 }

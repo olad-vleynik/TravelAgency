@@ -9,7 +9,7 @@
     <fmt:setBundle basename="dictionaries"/>
     <meta charset="utf-8">
     <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
-    <title>Login</title>
+    <title>Entry</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,7 +76,14 @@
         form .error {
             color: #ff0000;
         }
-        #second{display:none;}
+        <c:choose>
+            <c:when test="${requestScope.action == 'registration'}">
+                #first{display:none;}
+            </c:when>
+            <c:otherwise>
+                #second{display:none;}
+            </c:otherwise>
+        </c:choose>
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -135,7 +142,7 @@
                             <h1 ><fmt:message key="registration"/></h1>
                         </div>
                     </div>
-                    <form action="#" name="register">
+                    <form action="#" name="registerme">
                         <div class="form-group">
                             <label for="name"><fmt:message key="name"/></label>
                             <input type="text"  name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.name"/>">
@@ -214,6 +221,8 @@
                 password: "<fmt:message key="invalid.password"/>"
             },
             submitHandler: function(form) {
+                form.method = "POST";
+                form.action = "/login";
                 form.submit();
             }
         });
@@ -223,7 +232,7 @@
 
     $(function() {
 
-        $("form[name='register']").validate({
+        $("form[name='registerme']").validate({
             rules: {
                 name: {
                     required: true,

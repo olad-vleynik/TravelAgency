@@ -11,7 +11,7 @@ import java.util.Base64;
  * @author Vladyslav Oliinyk.
  * @version 1.0
  */
-public class PasswordHashUtil {
+public class PasswordUtil {
     public static final String HASH_ALGORITHM = "SHA-512";
 
     /**
@@ -19,7 +19,7 @@ public class PasswordHashUtil {
      *
      * @throws IllegalStateException on calling
      */
-    private PasswordHashUtil() {
+    private PasswordUtil() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -51,5 +51,18 @@ public class PasswordHashUtil {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         return salt;
+    }
+
+    /**
+     * Compare entered password with users actual
+     *
+     * @param userSaltPlusPasswordHash - user salt + hashed password (from database)
+     * @param enteredPassword - entered password
+     * @return true if they equal of false if not
+     */
+    public static boolean isPasswordCorrect(String userSaltPlusPasswordHash, String enteredPassword){
+        byte[] userPasswordSalt = Base64.getDecoder().decode(userSaltPlusPasswordHash.substring(0, 24));
+        String enteredPasswordHash = getHash(enteredPassword, userPasswordSalt);
+        return enteredPasswordHash.equals(userSaltPlusPasswordHash.substring(24));
     }
 }

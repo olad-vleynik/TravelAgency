@@ -4,6 +4,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -72,5 +73,16 @@ public class LocaleUtil {
         localeCookie.setDomain("vlad-travel.pp.ua");
         localeCookie.setMaxAge(COOKIE_AGE);
         response.addCookie(localeCookie);
+    }
+
+    /**
+     * Sets client locale
+     *
+     * @param response - http response to set cookie
+     * @param locale   - locale to set
+     */
+    public static void changeClientLocale(HttpSession session, HttpServletResponse response, String locale) {
+        session.setAttribute("locale", locale);
+        addLocaleCookie(response, locale);
     }
 }
