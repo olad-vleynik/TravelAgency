@@ -8,17 +8,15 @@ public class Tour implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int id;
+    private String name;
+    private String info;
     private State state;
     private boolean isHot;
     private Date date;
-    private int daysCount;
+    private int nightsCount;
     private TourType type;
     private double costInUSD;
-    private int minPersons;
-    private int maxPersons;
     private int hotelRating;
-    private String info;
-    private String name;
 
     public enum TourType {
         RELAX,
@@ -28,8 +26,6 @@ public class Tour implements Serializable {
 
     public enum State {
         AVAILABLE,
-        BOOKED,
-        PAYED,
         ONGOING,
         COMPLETED,
         CANCELED

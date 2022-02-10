@@ -2,7 +2,7 @@ package com.gmail.vleynik.olad.travelagency.servlets;
 
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
-import com.gmail.vleynik.olad.travelagency.dao.entity.UserBuilder;
+import com.gmail.vleynik.olad.travelagency.dao.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.utils.PasswordUtil;
 import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
 

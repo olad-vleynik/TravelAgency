@@ -1,7 +1,6 @@
 package com.gmail.vleynik.olad.travelagency.dao;
 
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
-import com.gmail.vleynik.olad.travelagency.dao.entity.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 
 import java.sql.*;

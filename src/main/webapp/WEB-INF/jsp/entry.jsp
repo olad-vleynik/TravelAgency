@@ -14,12 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap" rel="stylesheet">
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body{
-            padding-top:4.2rem;
             padding-bottom:4.2rem;
-            background:rgba(0, 0, 0, 0.76);
         }
         a{
             text-decoration:none !important;
@@ -42,6 +39,7 @@
             border-radius: 1.1rem;
             outline: 0;
             max-width: 500px;
+            margin-top: -0.25rem
         }
         .tx-tfm{
             text-transform:uppercase;
@@ -89,11 +87,9 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 </head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <body>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 <c:if test="${not empty errorMessage}">
     <script>
@@ -101,6 +97,7 @@
     </script>
 </c:if>
 
+<jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
     <div class="row">
         <div class="col-md-5 mx-auto">
@@ -111,7 +108,7 @@
                             <h1><fmt:message key="login"/></h1>
                         </div>
                     </div>
-                    <form action="" method="post" name="login">
+                    <form class="mb-n3" action="" method="post" name="login">
                         <div class="form-group">
                             <label for="login"><fmt:message key="email.or.phone"/></label>
                             <input type="login" name="login"  class="form-control" id="login" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.email.or.phone"/>">
@@ -119,6 +116,12 @@
                         <div class="form-group">
                             <label for="password"><fmt:message key="password"/></label>
                             <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.password"/>">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input mt-2" type="checkbox" value="" name="remember" id="remember">
+                            <label class="form-check-label" for="remember">
+                                <fmt:message key="remember.me"/>
+                            </label>
                         </div>
                         <div class="col-md-12 text-center ">
                             <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm"><fmt:message key="sign.in"/></button>
@@ -142,7 +145,7 @@
                             <h1 ><fmt:message key="registration"/></h1>
                         </div>
                     </div>
-                    <form action="#" name="registerme">
+                    <form class="mb-n3" action="#" name="registerme">
                         <div class="form-group">
                             <label for="name"><fmt:message key="name"/></label>
                             <input type="text"  name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.name"/>">
@@ -184,7 +187,6 @@
         </div>
     </div>
 </div>
-</body>
 <script type="text/javascript">
     $("#signup").click(function() {
         $("#first").fadeOut("fast", function() {
