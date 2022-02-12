@@ -22,16 +22,19 @@ CREATE TABLE users
 
 CREATE TABLE tours
 (
-    id          INT   NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    state       ENUM ('AVAILABLE', 'ONGOING', 'COMPLETED', 'CANCELED') DEFAULT 'AVAILABLE',
-    isHot       BOOL                                                   DEFAULT FALSE,
-    date        DATE  NOT NULL,
-    nightsCount INT   NOT NULL,
-    type        ENUM ('RELAX', 'SIGHTSEEING', 'SHOPPING'),
-    costInUSD   FLOAT NOT NULL,
-    hotelRating INT   NOT NULL,
-    info        VARCHAR(1000),
-    name        VARCHAR(20)
+    id           INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name         VARCHAR(20) NOT NULL,
+    info         VARCHAR(1000),
+    COUNTRY      VARCHAR(20),
+    state        ENUM ('AVAILABLE', 'ONGOING', 'COMPLETED', 'CANCELED') DEFAULT 'AVAILABLE',
+    type         ENUM ('RELAX', 'SIGHTSEEING', 'SHOPPING'),
+    isHot        BOOL                                                   DEFAULT FALSE,
+    date         DATE        NOT NULL,
+    nightsCount  INT         NOT NULL,
+    hotelRating  INT         NOT NULL,
+    hotelName    VARCHAR(20),
+    transferType ENUM ('AIRPLANE', 'BUS', 'TRAIN', 'CRUISE_LINER'),
+    costInUSD    FLOAT       NOT NULL
 );
 
 CREATE TABLE orders
@@ -50,8 +53,8 @@ CREATE TABLE orders
 
 CREATE TABLE saved_entries
 (
-    uuId  VARCHAR(36) NOT NULL PRIMARY KEY,
-    userId INT NOT NULL,
+    uuId   VARCHAR(36) NOT NULL PRIMARY KEY,
+    userId INT         NOT NULL,
     CONSTRAINT saved_user_id_fk
         FOREIGN KEY (userId)
             REFERENCES users (id) ON DELETE CASCADE

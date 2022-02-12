@@ -88,7 +88,7 @@ public class SavedEntryDAO implements DAO<SavedEntry>{
         return getByUUID(uuId).getUserId() == -1;
     }
 
-    public String getUniqueUUID() {
+    public synchronized String getUniqueUUID() {
         String uuId;
         do {
             uuId = UUID.randomUUID().toString();

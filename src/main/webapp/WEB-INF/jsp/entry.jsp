@@ -163,15 +163,15 @@
                             <input type="text" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.email"/>">
                         </div>
                         <div class="form-group">
-                            <label for="password"><fmt:message key="password"/></label>
-                            <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.password"/>">
+                            <label for="regPassword"><fmt:message key="password"/></label>
+                            <input type="password" name="regPassword" id="regPassword"  class="form-control" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.password"/>">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-4">
                             <label for="birthday"><fmt:message key="birthday"/></label>
-                            <input type="text" name="birthday" id="birthday"  class="form-control datepicker" aria-describedby="emailHelp">
-                            <div class="input-group-addon">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </div>
+                            <input type="date" class="form-control" id="birthday" name="birthday" aria-describedby="minAge" required />
+                            <small id="minAge" class="form-text text-muted">
+                                Only 16+
+                            </small>
                         </div>
                         <div class="col-md-12 text-center mb-3">
                             <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm"><fmt:message key="sign.up"/></button>
@@ -200,11 +200,19 @@
         });
     });
 
+    $(function(){
+        var dtToday = new Date();
 
-    $('.datepicker').datepicker({
-        endDate: '-18y'
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear() - 16;
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#birthday').attr('max', maxDate);
     });
-
 
     $(function() {
         $("form[name='login']").validate({

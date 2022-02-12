@@ -35,7 +35,7 @@ public class RegistrationServlet extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         if (phoneNumber.startsWith("0"))
             phoneNumber = "+38" + phoneNumber;
-        String password = request.getParameter("password");
+        String password = request.getParameter("regPassword");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String email = request.getParameter("email").toLowerCase();
@@ -43,7 +43,7 @@ public class RegistrationServlet extends HttpServlet {
         try {
             if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
                 userDAO = new UserDAO();
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
                 byte[] passwordSalt = PasswordUtil.getSalt();
                 String hashedPassword = PasswordUtil.getHash(password, passwordSalt);
