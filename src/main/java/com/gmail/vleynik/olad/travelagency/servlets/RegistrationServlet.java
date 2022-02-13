@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
 @WebServlet("/register")
@@ -43,13 +45,13 @@ public class RegistrationServlet extends HttpServlet {
         try {
             if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
                 userDAO = new UserDAO();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
                 byte[] passwordSalt = PasswordUtil.getSalt();
                 String hashedPassword = PasswordUtil.getHash(password, passwordSalt);
                 String saltAndPassword = Base64.getEncoder().encodeToString(passwordSalt) + hashedPassword;
 
-                newUser = new UserBuilder(-2, name, surname, phoneNumber, email, saltAndPassword, sdf.parse(birthday))
+                newUser = new UserBuilder(-2, name, surname, phoneNumber, email, saltAndPassword, LocalDate.parse(birthday, dateFormatter))
                         .build();
 
                 newUser.setId(userDAO.addNew(newUser));
@@ -69,9 +71,6 @@ public class RegistrationServlet extends HttpServlet {
         } catch (RuntimeException e) {
             //TODO logger
             response.sendError(503);
-        } catch (ParseException e) {
-            //TODO date parse
-            e.printStackTrace();
         }
     }
 

@@ -24,7 +24,7 @@ public class UserDAO implements DAO<User> {
             preparedStatement.setString(3, user.getPhoneNumber());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, user.getPassword());
-            preparedStatement.setDate(6, new java.sql.Date(user.getBirthDay().getTime()));
+            preparedStatement.setDate(6, Date.valueOf(user.getBirthDay()));
 
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -69,7 +69,7 @@ public class UserDAO implements DAO<User> {
 
             user = new UserBuilder(rs.getInt("id"), rs.getString("name"),
                     rs.getString("surname"), rs.getString("phoneNumber"),
-                    rs.getString("email"), rs.getString("password"), rs.getDate("birthDay"))
+                    rs.getString("email"), rs.getString("password"), rs.getDate("birthDay").toLocalDate())
                     .setBalanceInUSD(rs.getDouble("balanceInUSD"))
                     .setPersonalDiscount(rs.getDouble("personalDiscount"))
                     .setMaxDiscount(rs.getDouble("maxDiscount"))
@@ -81,7 +81,7 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public void update(User user, String[] params) {
+    public void update(User user) {
 
     }
 

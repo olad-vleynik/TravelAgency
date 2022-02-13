@@ -2,7 +2,7 @@ package com.gmail.vleynik.olad.travelagency.dao;
 
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserBuilder {
     private int id;
@@ -11,7 +11,7 @@ public class UserBuilder {
     private String phoneNumber;
     private String email;
     private String password;
-    private Date birthDay;
+    private LocalDate birthDay;
 
     private double balanceInUSD = 0;
     private double personalDiscount = 0;
@@ -20,7 +20,7 @@ public class UserBuilder {
     private boolean isBanned = false;
     private User.AccessLevel accessLevel = User.AccessLevel.CLIENT;
 
-    public UserBuilder(int id, String name, String surname, String phoneNumber, String email, String password, Date birthDay) {
+    public UserBuilder(int id, String name, String surname, String phoneNumber, String email, String password, LocalDate birthDay) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -60,7 +60,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setBirthDay(Date birthDay) {
+    public UserBuilder setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
         return this;
     }

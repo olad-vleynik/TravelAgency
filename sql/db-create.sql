@@ -53,8 +53,9 @@ CREATE TABLE orders
 
 CREATE TABLE saved_entries
 (
-    uuId   VARCHAR(36) NOT NULL PRIMARY KEY,
-    userId INT         NOT NULL,
+    uuId      VARCHAR(36) NOT NULL PRIMARY KEY,
+    userId    INT         NOT NULL,
+    validUntil DATE,
     CONSTRAINT saved_user_id_fk
         FOREIGN KEY (userId)
             REFERENCES users (id) ON DELETE CASCADE

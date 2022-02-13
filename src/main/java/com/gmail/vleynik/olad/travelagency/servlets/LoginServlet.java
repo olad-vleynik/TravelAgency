@@ -7,6 +7,7 @@ import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -27,8 +28,8 @@ public class LoginServlet extends HttpServlet {
 
     private static final String ENTRY_JSP = "/WEB-INF/jsp/entry.jsp";
 
-    //30 days
-    private static final int COOKIE_AGE = 60 * 60 * 24 * 30;
+    private static final int COOKIE_AGE_IN_DAYS = 30;
+    private static final int COOKIE_AGE_IN_SECONDS = 60 * 60 * 24 * COOKIE_AGE_IN_DAYS;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -58,10 +59,10 @@ public class LoginServlet extends HttpServlet {
                     Cookie uuidCookie = new Cookie("uniqueId", uniqueId);
                     uuidCookie.setPath("/");
                     uuidCookie.setDomain(request.getServerName());
-                    uuidCookie.setMaxAge(COOKIE_AGE);
+                    uuidCookie.setMaxAge(COOKIE_AGE_IN_SECONDS);
                     response.addCookie(uuidCookie);
 
-                    savedEntryDAO.addNew(new SavedEntry(uniqueId, user.getId()));
+                    savedEntryDAO.addNew(new SavedEntry(uniqueId, user.getId(), LocalDate.now().plusDays(COOKIE_AGE_IN_DAYS)));
                 }
 
                 response.sendRedirect(request.getContextPath() + "/");
@@ -86,13 +87,17 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
         } else {
             if (action.equals("exit")) {
-                SavedEntryDAO savedEntryDAO = new SavedEntryDAO();
-                savedEntryDAO.delete((Integer)session.getAttribute(USER_ID));
+                String uuid = getUserUUID(request);
 
-                Cookie uuidCookie = new Cookie("uniqueId", "");
-                uuidCookie.setPath("/");
-                uuidCookie.setMaxAge(0);
-                response.addCookie(uuidCookie);
+                if (uuid != null) {
+                    SavedEntryDAO savedEntryDAO = new SavedEntryDAO();
+                    savedEntryDAO.deleteByUUID(uuid);
+
+                    Cookie uuidCookie = new Cookie("uniqueId", "");
+                    uuidCookie.setPath("/");
+                    uuidCookie.setMaxAge(0);
+                    response.addCookie(uuidCookie);
+                }
 
                 session.removeAttribute(USER_FULL_NAME);
                 session.removeAttribute(USER_ID);
@@ -100,5 +105,19 @@ public class LoginServlet extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/");
         }
+    }
+
+    private String getUserUUID(HttpServletRequest request){
+        String uuid = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("uniqueId".equals(cookie.getName())) {
+                    uuid = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        return uuid;
     }
 }

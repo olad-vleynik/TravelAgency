@@ -1,6 +1,7 @@
 package com.gmail.vleynik.olad.travelagency.dao.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public class User implements Serializable {
     private String phoneNumber;
     private String email;
     private String password;
-    private Date birthDay;
+    private LocalDate birthDay;
 
     private double balanceInUSD;
     private double personalDiscount;
@@ -27,7 +28,7 @@ public class User implements Serializable {
     }
 
     public User(int id, String name, String surname, String phoneNumber, String email,
-                String password, Date birthDay, double balanceInUSD, double personalDiscount,
+                String password, LocalDate birthDay, double balanceInUSD, double personalDiscount,
                 double maxDiscount, boolean isBanned, AccessLevel accessLevel) {
         this.id = id;
         this.name = name;
@@ -97,11 +98,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Date getBirthDay() {
+    public LocalDate getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
     }
 

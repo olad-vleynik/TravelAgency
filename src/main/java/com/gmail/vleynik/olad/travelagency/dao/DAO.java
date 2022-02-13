@@ -11,6 +11,6 @@ import java.sql.SQLException;
 public interface DAO<T> {
     int addNew(T t);
     T getById(int id) throws SQLException;
-    void update(T t, String[] params);
+    void update(T t);
     void delete(int id);
 }

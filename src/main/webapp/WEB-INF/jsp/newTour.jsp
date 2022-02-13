@@ -83,12 +83,14 @@
         .bootstrap-select button {
             overflow: hidden;
             text-overflow: ellipsis;
+            text-align: left;
         }
 
         /* Make filled out selects be the same size as empty selects */
         .bootstrap-select.btn-group .dropdown-toggle .filter-option {
             display: inline !important;
         }
+
     </style>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -140,7 +142,7 @@
                     <div class="form-row mb-4 pt-3">
                         <div class="form-group col-md-5 mr-3">
                             <label for="country"><fmt:message key="country"/></label>
-                            <select class="selectpicker countrypicker form-control" data-default="Choose" id="country" title="Chooosesss" data-live-search="true"></select>
+                            <select class="selectpicker countrypicker form-control" data-default=" " id="country" title="<fmt:message key="choose"/>" data-live-search="true"></select>
                         </div>
                         <div class="form-group col-md-3 mr-3">
                             <label for="departure"><fmt:message key="departure.date"/></label>
