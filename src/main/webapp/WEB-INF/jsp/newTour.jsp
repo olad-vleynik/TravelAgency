@@ -137,7 +137,7 @@
                         <h1><fmt:message key="new.tour"/></h1>
                     </div>
                 </div>
-                <form class="mb-n3" action="#" name="addTour">
+                <form class="mb-n3" action="#" name="addTour" enctype="multipart/form-data">
                     <div class="form-row mb-4">
                         <div class="form-group col-md-5 mr-3">
                             <label for="tourName"><fmt:message key="tour.name"/></label>
@@ -147,9 +147,9 @@
                             <label for="tourType"><fmt:message key="tour.type"/></label>
                             <select id="tourType" class="form-control" name="tourType">
                                 <option selected value=""><fmt:message key="choose"/></option>
-                                <option value="relax"><fmt:message key="relax"/></option>
-                                <option value="sightseeing"><fmt:message key="sightseeing"/></option>
-                                <option value="shopping"><fmt:message key="shopping"/></option>
+                                <option value="RELAX"><fmt:message key="relax"/></option>
+                                <option value="SIGHTSEEING"><fmt:message key="sightseeing"/></option>
+                                <option value="SHOPPING"><fmt:message key="shopping"/></option>
                             </select>
                         </div>
                         <div class="custom-control custom-switch pt-3 mt-4">
@@ -174,10 +174,10 @@
                             <label for="transferType"><fmt:message key="transfer"/></label>
                             <select id="transferType" class="form-control" name="transfer">
                                 <option selected value=""><fmt:message key="choose"/></option>
-                                <option value="airplane"><fmt:message key="airplane"/></option>
-                                <option value="bus"><fmt:message key="bus"/></option>
-                                <option value="cruise.liner"><fmt:message key="cruise.liner"/></option>
-                                <option value="train"><fmt:message key="train"/></option>
+                                <option value="AIRPLANE"><fmt:message key="airplane"/></option>
+                                <option value="BUS"><fmt:message key="bus"/></option>
+                                <option value="CRUISE_LINER"><fmt:message key="cruise.liner"/></option>
+                                <option value="TRAIN"><fmt:message key="train"/></option>
                             </select>
                         </div>
                     </div>
@@ -204,15 +204,15 @@
                         <div class="form-group col-md-5 mr-3">
                             <label for="previewFile"><fmt:message key="preview"/></label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="previewFile" name="previewFile">
+                                <input type="file" class="custom-file-input" id="previewFile" name="previewFile" >
                                 <label class="custom-file-label" for="previewFile"><fmt:message key="choose.file"/></label>
                             </div>
                         </div>
                         <div class="form-group col-2">
                             <label for="price"><fmt:message key="price"/></label>
-                            <div class="input-group pr-2">
+                            <div class="input-group">
                                 <input type="number" class="form-control" id="price" name="price">
-                                <div class="input-group-append">
+                                <div class="input-group-append pr-5">
                                     <span class="input-group-text">$</span>
                                 </div>
                                 <label id="price-error" class="error order-last" for="price" style="display: none;"></label>
@@ -304,7 +304,7 @@
                 },
                 previewFile: {
                     extension: "jpg|jpeg",
-                    filesize: 5000000
+                    filesize: 5242880
                 }
             },
 
@@ -339,9 +339,18 @@
                 }
             },
             submitHandler: function(form) {
-                form.method = "POST";
-                form.action = "/tour";
-                form.submit();
+                var formData = new FormData(form);
+                $.ajax({
+                    url: '/tour',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    method: 'POST',
+                    success : function(data) {
+                        window.location = "/tour?id=" + data;
+                    }
+                });
             }
         });
     });

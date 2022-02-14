@@ -175,7 +175,7 @@
                             <label for="birthday"><fmt:message key="birthday"/></label>
                             <input type="date" class="form-control" id="birthday" name="birthday" aria-describedby="minAge" required />
                             <small id="minAge" class="form-text text-muted">
-                                Only 16+
+                                <fmt:message key="only.16"/>
                             </small>
                         </div>
                         <div class="col-md-12 text-center mb-3">

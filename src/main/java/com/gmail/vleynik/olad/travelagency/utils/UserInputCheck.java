@@ -49,6 +49,21 @@ public class UserInputCheck {
     }
 
     /**
+     * Method checks that all given parameters are not null
+     *
+     * @param objects - array of any objects
+     * @return true if all objects are not null, or false if one or more are null
+     */
+    public static boolean isAllFilled(Object... objects) {
+        for (Object object : objects) {
+            if (object == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Method checks that e-mail matches regex {@link UserInputCheck#VALID_EMAIL_ADDRESS_REGEX}
      * and user with such e-mail is not present in the database
      *

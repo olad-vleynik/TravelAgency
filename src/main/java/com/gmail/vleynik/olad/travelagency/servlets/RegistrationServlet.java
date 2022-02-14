@@ -5,8 +5,10 @@ import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 import com.gmail.vleynik.olad.travelagency.dao.builders.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.utils.PasswordUtil;
 import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,9 @@ import java.util.Base64;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
+
+    private static final Logger log = Logger.getLogger(RegistrationServlet.class);
+
     private static final String USER_ID = "user_id";
     private static final String USER_FULL_NAME = "user_full_name";
     private static final String USER_ACCESS_LEVEL = "user_access_level";
@@ -65,10 +70,7 @@ public class RegistrationServlet extends HttpServlet {
                 request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
             }
         } catch (SQLException e) {
-            //TODO logger
-            response.sendError(503);
-        } catch (RuntimeException e) {
-            //TODO logger
+            log.fatal("something wrong with database");
             response.sendError(503);
         }
     }

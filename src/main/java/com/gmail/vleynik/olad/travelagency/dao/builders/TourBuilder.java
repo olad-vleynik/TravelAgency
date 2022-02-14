@@ -3,6 +3,7 @@ package com.gmail.vleynik.olad.travelagency.dao.builders;
 import com.gmail.vleynik.olad.travelagency.dao.entity.Tour;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TourBuilder {
@@ -14,7 +15,7 @@ public class TourBuilder {
     private Tour.State state;
     private Tour.TourType type;
     private boolean isHot;
-    private Date date;
+    private LocalDate date;
     private int nightsCount;
     private int hotelRating;
     private String hotelName;
@@ -57,7 +58,7 @@ public class TourBuilder {
         return this;
     }
 
-    public TourBuilder setDate(Date date) {
+    public TourBuilder setDate(LocalDate date) {
         this.date = date;
         return this;
     }

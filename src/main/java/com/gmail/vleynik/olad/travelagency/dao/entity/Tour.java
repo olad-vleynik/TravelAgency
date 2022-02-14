@@ -1,7 +1,7 @@
 package com.gmail.vleynik.olad.travelagency.dao.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Tour implements Serializable {
@@ -15,7 +15,7 @@ public class Tour implements Serializable {
     private State state;
     private TourType type;
     private boolean isHot;
-    private Date date;
+    private LocalDate date;
     private int nightsCount;
     private int hotelRating;
     private String hotelName;
@@ -24,7 +24,7 @@ public class Tour implements Serializable {
     private String previewPath;
 
     public Tour(int id, String name, String info, String country, State state, TourType type,
-                boolean isHot, Date date, int nightsCount, int hotelRating, String hotelName,
+                boolean isHot, LocalDate date, int nightsCount, int hotelRating, String hotelName,
                 TransferType transferType, double costInUSD, String previewPath) {
         this.id = id;
         this.name = name;
@@ -108,11 +108,11 @@ public class Tour implements Serializable {
         return this;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Tour setDate(Date date) {
+    public Tour setDate(LocalDate date) {
         this.date = date;
         return this;
     }
