@@ -1,8 +1,8 @@
 package com.gmail.vleynik.olad.travelagency.listeners;
 
-import com.gmail.vleynik.olad.travelagency.dao.SavedEntryDAO;
 import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 import com.gmail.vleynik.olad.travelagency.utils.TaskExecutorService;
+import com.gmail.vleynik.olad.travelagency.utils.tasks.RemoveExpiredEntryTask;
 import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 import org.apache.log4j.Logger;
 
@@ -22,11 +22,8 @@ import java.time.LocalTime;
 public class ContextListener implements ServletContextListener {
 
     private static final Logger log = Logger.getLogger(ContextListener.class);
-    TaskExecutorService removeAutoLoginIfCookieAgeExpiredTask =
-            new TaskExecutorService(() -> {
-                SavedEntryDAO savedEntryDAO = new SavedEntryDAO();
-                savedEntryDAO.deleteExpiredSessions();
-            });
+    TaskExecutorService removeExpiredEntryExecutor =
+            new TaskExecutorService(new RemoveExpiredEntryTask());
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -34,7 +31,7 @@ public class ContextListener implements ServletContextListener {
 
         try {
             ConnectionUtil.init();
-            removeAutoLoginIfCookieAgeExpiredTask.startExecutionAt(LocalTime.of(0, 0), 24);
+            removeExpiredEntryExecutor.startExecutionAt(LocalTime.of(0, 0), 24);
             log.debug("context has been successfully initialized");
         } catch (IOException e) {
             log.fatal(e.getMessage());
@@ -44,7 +41,7 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        removeAutoLoginIfCookieAgeExpiredTask.stop();
+        removeExpiredEntryExecutor.stop();
         AbandonedConnectionCleanupThread.checkedShutdown();
         log.debug("context destroyed");
     }

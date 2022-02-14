@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.travelagency.dao;
+package com.gmail.vleynik.olad.travelagency.dao.builders;
 
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 

@@ -34,7 +34,8 @@ CREATE TABLE tours
     hotelRating  INT         NOT NULL,
     hotelName    VARCHAR(20),
     transferType ENUM ('AIRPLANE', 'BUS', 'TRAIN', 'CRUISE_LINER'),
-    costInUSD    FLOAT       NOT NULL
+    costInUSD    FLOAT       NOT NULL,
+    previewPath  VARCHAR(250)
 );
 
 CREATE TABLE orders

@@ -16,6 +16,8 @@ public class TourServiceServlet extends HttpServlet {
     private static final String NEW_TOUR_JSP = "/WEB-INF/jsp/newTour.jsp";
     private static final String TOUR_DETAILS_JSP = "/WEB-INF/jsp/tourDetails.jsp";
 
+
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();

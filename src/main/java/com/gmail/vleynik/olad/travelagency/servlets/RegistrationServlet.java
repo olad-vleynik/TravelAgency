@@ -2,7 +2,7 @@ package com.gmail.vleynik.olad.travelagency.servlets;
 
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
-import com.gmail.vleynik.olad.travelagency.dao.UserBuilder;
+import com.gmail.vleynik.olad.travelagency.dao.builders.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.utils.PasswordUtil;
 import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
 
@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;

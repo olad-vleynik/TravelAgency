@@ -38,6 +38,29 @@
         form .error {
             color: #ff0000;
         }
+        .custom-control-input:focus~.custom-control-label::before {
+            border-color: #ff5100 !important;
+            box-shadow: 0 0 0 0.2rem rgba(255, 81, 0, 0.25) !important;
+        }
+
+        .custom-control-input:checked~.custom-control-label::before {
+            border-color: #ff5100 !important;
+            background-color: #ff5100 !important;
+        }
+
+        .custom-control-input:active~.custom-control-label::before {
+            background-color: #ff5100 !important;
+            border-color: #ff5100 !important;
+        }
+
+        .custom-control-input:focus:not(:checked)~.custom-control-label::before {
+            border-color: #ff5100 !important;
+        }
+
+        .custom-control-input-green:not(:disabled):active~.custom-control-label::before {
+            background-color: #ff5100 !important;
+            border-color: #ff5100 !important;
+        }
         /*
         Make bootstrap-select work with bootstrap 4 see:
         https://github.com/silviomoreto/bootstrap-select/issues/1135
@@ -99,10 +122,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  <link rel="stylesheet" href="//unpkg.com/bootstrap-select@1.12.4/dist/css/bootstrap-select.min.css" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
-
-
-
 
 </head>
 <body>
@@ -192,10 +211,11 @@
                         <div class="form-group col-2">
                             <label for="price"><fmt:message key="price"/></label>
                             <div class="input-group pr-2">
-                                <div class="input-group-prepend">
+                                <input type="number" class="form-control" id="price" name="price">
+                                <div class="input-group-append">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input type="number" class="form-control" id="price" name="price">
+                                <label id="price-error" class="error order-last" for="price" style="display: none;"></label>
                             </div>
                         </div>
                     </div>
@@ -220,11 +240,17 @@
 <script src="//unpkg.com/bootstrap-select-country@4.0.0/dist/js/bootstrap-select-country.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/additional-methods.js"></script>
 
 <script>
     $(document).ready(function () {
         bsCustomFileInput.init()
+
+        $.validator.addMethod('filesize', function (value, element, param) {
+            return this.optional(element) || (element.files[0].size <= param)
+        }, 'File size must be less than {0}');
     })
+
 
     $(function(){
         var dtToday = new Date();
@@ -275,6 +301,10 @@
                 price: {
                     required: true,
                     min: 1
+                },
+                previewFile: {
+                    extension: "jpg|jpeg",
+                    filesize: 5000000
                 }
             },
 
@@ -302,6 +332,10 @@
                 price: {
                     required: "<fmt:message key="please.enter.price"/>",
                     min: "<fmt:message key="min.one"/>"
+                },
+                previewFile: {
+                    extension: "<fmt:message key="extension.jpg"/>",
+                    filesize: "<fmt:message key="max.5.mb"/>"
                 }
             },
             submitHandler: function(form) {
