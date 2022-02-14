@@ -62,7 +62,8 @@ public class RegistrationServlet extends HttpServlet {
 
                 response.sendRedirect(request.getContextPath() + "/");
             } else {
-                request.setAttribute("errorMessage", "duplicate.email.or.phone");
+                request.setAttribute("action", "registration");
+                request.setAttribute("registrationErrorMessage", "duplicate.email.or.phone");
                 request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
             }
         } catch (SQLException e) {

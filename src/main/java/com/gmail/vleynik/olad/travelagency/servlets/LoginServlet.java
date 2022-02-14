@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/");
             } else {
                 log.warn("client " + request.getRemoteAddr() + " login fail. Login: " + login + " Reason: Incorrect password");
-                request.setAttribute("errorMessage", "incorrect.login.password");
+                request.setAttribute("loginErrorMessage", "incorrect.login.password");
                 request.getRequestDispatcher(ENTRY_JSP).forward(request, response);
             }
         } catch (SQLException e) {

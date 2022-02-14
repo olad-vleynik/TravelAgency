@@ -35,6 +35,9 @@
             max-width: 1200px;
             margin-top: -0.25rem
         }
+        form .error {
+            color: #ff0000;
+        }
         /*
         Make bootstrap-select work with bootstrap 4 see:
         https://github.com/silviomoreto/bootstrap-select/issues/1135
@@ -119,80 +122,80 @@
                     <div class="form-row mb-4">
                         <div class="form-group col-md-5 mr-3">
                             <label for="tourName"><fmt:message key="tour.name"/></label>
-                            <input type="text" class="form-control" id="tourName" placeholder="<fmt:message key="enter.tour.name"/>">
+                            <input type="text" class="form-control" name="tourName" id="tourName" placeholder="<fmt:message key="enter.tour.name"/>">
                         </div>
                         <div class="form-group col-md-3 mr-3">
                             <label for="tourType"><fmt:message key="tour.type"/></label>
-                            <select id="tourType" class="form-control">
-                                <option selected><fmt:message key="choose"/></option>
-                                <option><fmt:message key="relax"/></option>
-                                <option><fmt:message key="sightseeing"/></option>
-                                <option><fmt:message key="shopping"/></option>
+                            <select id="tourType" class="form-control" name="tourType">
+                                <option selected value=""><fmt:message key="choose"/></option>
+                                <option value="relax"><fmt:message key="relax"/></option>
+                                <option value="sightseeing"><fmt:message key="sightseeing"/></option>
+                                <option value="shopping"><fmt:message key="shopping"/></option>
                             </select>
                         </div>
                         <div class="custom-control custom-switch pt-3 mt-4">
-                            <input type="checkbox" class="custom-control-input" id="hot">
+                            <input type="checkbox" class="custom-control-input" id="hot" name="hot">
                             <label class="custom-control-label" for="hot"><fmt:message key="hot"/></label>
                         </div>
                     </div>
                     <div class="form-group mb-4">
                         <label for="info"><fmt:message key="detail.information"/></label>
-                        <textarea class="form-control" id="info" rows="5" placeholder="<fmt:message key="enter.tour.details"/>"></textarea>
+                        <textarea class="form-control" id="info" rows="5" name="info" placeholder="<fmt:message key="enter.tour.details"/>"></textarea>
                     </div>
                     <div class="form-row mb-4 pt-3">
                         <div class="form-group col-md-5 mr-3">
                             <label for="country"><fmt:message key="country"/></label>
-                            <select class="selectpicker countrypicker form-control" data-default=" " id="country" title="<fmt:message key="choose"/>" data-live-search="true"></select>
+                            <select class="selectpicker countrypicker form-control" data-default="UA" name="country" id="country" data-live-search="true"></select>
                         </div>
                         <div class="form-group col-md-3 mr-3">
                             <label for="departure"><fmt:message key="departure.date"/></label>
-                            <input type="date" class="form-control" id="departure" name="departure" width="200" required />
+                            <input type="date" class="form-control" id="departure" name="departure" width="200"/>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="transferType"><fmt:message key="transfer"/></label>
-                            <select id="transferType" class="form-control">
-                                <option selected><fmt:message key="choose"/></option>
-                                <option><fmt:message key="airplane"/></option>
-                                <option><fmt:message key="bus"/></option>
-                                <option><fmt:message key="cruise.liner"/></option>
-                                <option><fmt:message key="train"/></option>
+                            <select id="transferType" class="form-control" name="transfer">
+                                <option selected value=""><fmt:message key="choose"/></option>
+                                <option value="airplane"><fmt:message key="airplane"/></option>
+                                <option value="bus"><fmt:message key="bus"/></option>
+                                <option value="cruise.liner"><fmt:message key="cruise.liner"/></option>
+                                <option value="train"><fmt:message key="train"/></option>
                             </select>
                         </div>
                     </div>
                     <div class="form-row mb-4">
                         <div class="form-group col-md-5 mr-3">
                             <label for="hotelName"><fmt:message key="hotel.name"/></label>
-                            <input type="text" class="form-control" id="hotelName" placeholder="<fmt:message key="enter.hotel.name"/>">
+                            <input type="text" class="form-control" id="hotelName" name="hotelName" placeholder="<fmt:message key="enter.hotel.name"/>">
                         </div>
                         <div class="form-group col-md-3 mr-3">
                             <label for="rating"><fmt:message key="rating"/></label>
-                            <select id="rating" class="form-control">
-                                <option selected><fmt:message key="choose"/></option>
-                                <option><fmt:message key="3star"/></option>
-                                <option><fmt:message key="4star"/></option>
-                                <option><fmt:message key="5star"/></option>
+                            <select id="rating" class="form-control" name="rating">
+                                <option selected value=""><fmt:message key="choose"/></option>
+                                <option value="3star"><fmt:message key="3star"/></option>
+                                <option value="4star"><fmt:message key="4star"/></option>
+                                <option value="5star"><fmt:message key="5star"/></option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="nights"><fmt:message key="nights"/></label>
-                            <input type="number" id="nights" class="form-control col-4" />
+                            <input type="number" id="nights" class="form-control col-4" value="1" name="nights"/>
                         </div>
                     </div>
                     <div class="form-row mb-4">
                         <div class="form-group col-md-5 mr-3">
                             <label for="previewFile"><fmt:message key="preview"/></label>
                             <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="previewFile" name="previewFile">
                                 <label class="custom-file-label" for="previewFile"><fmt:message key="choose.file"/></label>
-                                <input type="file" class="custom-file-input" id="previewFile">
                             </div>
                         </div>
                         <div class="form-group col-2">
                             <label for="price"><fmt:message key="price"/></label>
-                            <div class="input-group ">
-                                <input type="number" class="form-control" id="price">
-                                <div class="input-group-append ">
+                            <div class="input-group pr-2">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
+                                <input type="number" class="form-control" id="price" name="price">
                             </div>
                         </div>
                     </div>
@@ -215,7 +218,14 @@
 
 <script src="//unpkg.com/bootstrap-select@1.12.4/dist/js/bootstrap-select.min.js"></script>
 <script src="//unpkg.com/bootstrap-select-country@4.0.0/dist/js/bootstrap-select-country.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+
 <script>
+    $(document).ready(function () {
+        bsCustomFileInput.init()
+    })
+
     $(function(){
         var dtToday = new Date();
 
@@ -228,6 +238,78 @@
             day = '0' + day.toString();
         var minDate = year + '-' + month + '-' + day;
         $('#departure').attr('min', minDate);
+    });
+
+    $(function() {
+
+        $("form[name='addTour']").validate({
+            rules: {
+                tourName: {
+                    required: true,
+                    maxlength: 20
+                },
+                tourType: {
+                    required: true
+                },
+                info: {
+                    required: true,
+                    maxlength: 1000
+                },
+                departure: {
+                    required: true
+                },
+                transfer: {
+                    required: true
+                },
+                hotelName: {
+                    required: true,
+                    maxlength: 20
+                },
+                rating: {
+                    required: true
+                },
+                nights: {
+                    required: true,
+                    min: 1
+                },
+                price: {
+                    required: true,
+                    min: 1
+                }
+            },
+
+            messages: {
+                tourName: {
+                    required: "<fmt:message key="please.enter.tour.name"/>",
+                    maxlength: "<fmt:message key="max.length.twenty"/>"
+                },
+                tourType: "<fmt:message key="please.choose"/>",
+                info: {
+                    required: "<fmt:message key="please.enter.info"/>",
+                    maxlength: "<fmt:message key="max.length.thousand"/>"
+                },
+                departure: "<fmt:message key="please.pick.date"/>",
+                transfer: "<fmt:message key="please.choose"/>",
+                hotelName: {
+                    required: "<fmt:message key="please.enter.hotel.name"/>",
+                    maxlength: "<fmt:message key="max.length.twenty"/>"
+                },
+                rating: "<fmt:message key="please.choose"/>",
+                nights: {
+                    required: "<fmt:message key="please.enter.nights"/>",
+                    min: "<fmt:message key="min.one"/>"
+                },
+                price: {
+                    required: "<fmt:message key="please.enter.price"/>",
+                    min: "<fmt:message key="min.one"/>"
+                }
+            },
+            submitHandler: function(form) {
+                form.method = "POST";
+                form.action = "/tour";
+                form.submit();
+            }
+        });
     });
 </script>
 </body>

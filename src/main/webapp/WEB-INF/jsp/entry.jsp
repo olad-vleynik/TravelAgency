@@ -91,11 +91,7 @@
 <body>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
 
-<c:if test="${not empty errorMessage}">
-    <script>
-        window.alert('<fmt:message key="${errorMessage}"/>');
-    </script>
-</c:if>
+
 
 <jsp:include page="/WEB-INF/jsp/header.jsp" />
 <div class="container">
@@ -125,6 +121,11 @@
                         </div>
                         <div class="col-md-12 text-center ">
                             <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm"><fmt:message key="sign.in"/></button>
+                            <c:if test="${not empty loginErrorMessage}">
+                                <div class="text-danger">
+                                    <p class="text-center"><small><fmt:message key="${loginErrorMessage}"/></small></p>
+                                </div>
+                            </c:if>
                         </div>
                         <div class="col-md-12 ">
                             <div class="login-or">
@@ -166,6 +167,10 @@
                             <label for="regPassword"><fmt:message key="password"/></label>
                             <input type="password" name="regPassword" id="regPassword"  class="form-control" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.password"/>">
                         </div>
+                        <div class="form-group">
+                            <label for="regPasswordConfirm"><fmt:message key="confirm.password"/></label>
+                            <input type="password" name="regPasswordConfirm" id="regPasswordConfirm"  class="form-control" aria-describedby="emailHelp" placeholder="<fmt:message key="enter.same.password"/>">
+                        </div>
                         <div class="form-group mb-4">
                             <label for="birthday"><fmt:message key="birthday"/></label>
                             <input type="date" class="form-control" id="birthday" name="birthday" aria-describedby="minAge" required />
@@ -175,6 +180,11 @@
                         </div>
                         <div class="col-md-12 text-center mb-3">
                             <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm"><fmt:message key="sign.up"/></button>
+                            <c:if test="${not empty registrationErrorMessage}">
+                                <div class="text-danger">
+                                    <p class="text-center"><small><fmt:message key="${registrationErrorMessage}"/></small></p>
+                                </div>
+                            </c:if>
                         </div>
                         <div class="col-md-12 ">
                             <div class="form-group">
@@ -261,9 +271,14 @@
                     regex:/^[a-zA-Z0-9]+[._-]?[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
                     maxlength: 40
                 },
-                password: {
+                regPassword: {
                     required: true,
                     minlength: 5
+                },
+                regPasswordConfirm: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#regPassword"
                 },
                 birthday: {
                     required: true
@@ -273,9 +288,14 @@
             messages: {
                 name: "<fmt:message key="invalid.name"/>",
                 surname: "<fmt:message key="invalid.surname"/>",
-                password: {
+                regPassword: {
                     required: "<fmt:message key="invalid.password"/>",
                     minlength: "<fmt:message key="invalid.password.length"/>"
+                },
+                regPasswordConfirm: {
+                    required: "<fmt:message key="invalid.password"/>",
+                    minlength: "<fmt:message key="invalid.password.length"/>",
+                    equalTo: "<fmt:message key="passwords.not.same"/>"
                 },
                 phoneNumber: "<fmt:message key="invalid.phone.number"/>",
                 email: "<fmt:message key="invalid.email"/>",
