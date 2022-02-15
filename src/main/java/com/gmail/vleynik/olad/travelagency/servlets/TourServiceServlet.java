@@ -13,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -61,9 +60,11 @@ public class TourServiceServlet extends HttpServlet {
                     .setDate(LocalDate.parse(departure, dateFormatter))
                     .setTransferType(Tour.TransferType.valueOf(transfer.toUpperCase(Locale.ROOT)))
                     .setHotelName(hotelName)
+                    .setHot(false)
                     .setHotelRating(Integer.parseInt(rating.substring(0, 1)))
                     .setNightsCount(Integer.parseInt(nights))
                     .setCostInUSD(Integer.parseInt(price))
+                    .setPreviewFile("")
                     .build();
 
             if (hot != null)
@@ -82,7 +83,7 @@ public class TourServiceServlet extends HttpServlet {
                     if (fileName.length() > 10)
                         filePart.write(imagesPath + fileName);
 
-                    tour.setPreviewPath(imagesPath + fileName);
+                    tour.setPreviewFile(imagesPath + fileName);
                 } catch (IOException e) {
                     e.printStackTrace();
                     log.error("can't upload image file");

@@ -22,20 +22,20 @@ CREATE TABLE users
 
 CREATE TABLE tours
 (
-    id           INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name         VARCHAR(20) NOT NULL,
-    info         VARCHAR(1000),
-    COUNTRY      VARCHAR(20),
+    id           INT                                               NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name         VARCHAR(20)                                       NOT NULL,
+    info         VARCHAR(1000)                                     NOT NULL,
+    COUNTRY      VARCHAR(20)                                       NOT NULL,
     state        ENUM ('AVAILABLE', 'ONGOING', 'COMPLETED', 'CANCELED') DEFAULT 'AVAILABLE',
-    type         ENUM ('RELAX', 'SIGHTSEEING', 'SHOPPING'),
+    type         ENUM ('RELAX', 'SIGHTSEEING', 'SHOPPING')         NOT NULL,
     isHot        BOOL                                                   DEFAULT FALSE,
-    date         DATE        NOT NULL,
-    nightsCount  INT         NOT NULL,
-    hotelRating  INT         NOT NULL,
-    hotelName    VARCHAR(20),
-    transferType ENUM ('AIRPLANE', 'BUS', 'TRAIN', 'CRUISE_LINER'),
-    costInUSD    FLOAT       NOT NULL,
-    previewPath  VARCHAR(250)
+    date         DATE                                              NOT NULL,
+    nightsCount  INT                                               NOT NULL,
+    hotelRating  INT                                               NOT NULL,
+    hotelName    VARCHAR(20)                                       NOT NULL,
+    transferType ENUM ('AIRPLANE', 'BUS', 'TRAIN', 'CRUISE_LINER') NOT NULL,
+    costInUSD    FLOAT                                             NOT NULL,
+    previewFile  VARCHAR(250)
 );
 
 CREATE TABLE orders
@@ -54,10 +54,28 @@ CREATE TABLE orders
 
 CREATE TABLE saved_entries
 (
-    uuId      VARCHAR(36) NOT NULL PRIMARY KEY,
-    userId    INT         NOT NULL,
+    uuId       VARCHAR(36) NOT NULL PRIMARY KEY,
+    userId     INT         NOT NULL,
     validUntil DATE,
     CONSTRAINT saved_user_id_fk
         FOREIGN KEY (userId)
             REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TABLE transfers
+(
+    id       INT         NOT NULL PRIMARY KEY,
+    transfer VARCHAR(36) NOT NULL
+);
+
+INSERT INTO transfers
+VALUES (1, 'airplane');
+
+INSERT INTO transfers
+VALUES (2, 'bus');
+
+INSERT INTO transfers
+VALUES (3, 'train');
+
+INSERT INTO transfers
+VALUES (4, 'cruise.liner');

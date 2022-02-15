@@ -20,12 +20,12 @@ public class Tour implements Serializable {
     private int hotelRating;
     private String hotelName;
     private TransferType transferType;
-    private double costInUSD;
-    private String previewPath;
+    private int costInUSD;
+    private String previewFile;
 
     public Tour(int id, String name, String info, String country, State state, TourType type,
                 boolean isHot, LocalDate date, int nightsCount, int hotelRating, String hotelName,
-                TransferType transferType, double costInUSD, String previewPath) {
+                TransferType transferType, int costInUSD, String previewFile) {
         this.id = id;
         this.name = name;
         this.info = info;
@@ -39,7 +39,7 @@ public class Tour implements Serializable {
         this.hotelName = hotelName;
         this.transferType = transferType;
         this.costInUSD = costInUSD;
-        this.previewPath = previewPath;
+        this.previewFile = previewFile;
     }
 
     public Tour() {
@@ -153,21 +153,21 @@ public class Tour implements Serializable {
         return this;
     }
 
-    public double getCostInUSD() {
+    public int getCostInUSD() {
         return costInUSD;
     }
 
-    public Tour setCostInUSD(double costInUSD) {
+    public Tour setCostInUSD(int costInUSD) {
         this.costInUSD = costInUSD;
         return this;
     }
 
-    public String getPreviewPath() {
-        return previewPath;
+    public String getPreviewFile() {
+        return previewFile;
     }
 
-    public Tour setPreviewPath(String previewPath) {
-        this.previewPath = previewPath;
+    public Tour setPreviewFile(String previewFile) {
+        this.previewFile = previewFile;
         return this;
     }
 
@@ -200,12 +200,12 @@ public class Tour implements Serializable {
                 && Double.compare(tour.costInUSD, costInUSD) == 0 && Objects.equals(name, tour.name)
                 && Objects.equals(info, tour.info) && Objects.equals(country, tour.country) && state == tour.state
                 && type == tour.type && Objects.equals(date, tour.date) && Objects.equals(hotelName, tour.hotelName)
-                && transferType == tour.transferType && Objects.equals(previewPath, tour.previewPath);
+                && transferType == tour.transferType && Objects.equals(previewFile, tour.previewFile);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, info, country, state, type, isHot, date, nightsCount, hotelRating, hotelName,
-                transferType, costInUSD, previewPath);
+                transferType, costInUSD, previewFile);
     }
 }

@@ -9,8 +9,15 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public interface DAO<T> {
+
+    /**
+     * @return id of added entity
+     */
     int addNew(T t);
+
     T getById(int id) throws SQLException;
+
     void update(T t);
+
     void delete(int id);
 }

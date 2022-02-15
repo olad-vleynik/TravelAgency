@@ -1,10 +1,8 @@
 package com.gmail.vleynik.olad.travelagency.dao.builders;
 
 import com.gmail.vleynik.olad.travelagency.dao.entity.Tour;
-import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class TourBuilder {
 
@@ -20,8 +18,8 @@ public class TourBuilder {
     private int hotelRating;
     private String hotelName;
     private Tour.TransferType transferType;
-    private double costInUSD;
-    private String previewPath;
+    private int costInUSD;
+    private String previewFile;
 
     public TourBuilder setId(int id) {
         this.id = id;
@@ -83,18 +81,18 @@ public class TourBuilder {
         return this;
     }
 
-    public TourBuilder setCostInUSD(double costInUSD) {
+    public TourBuilder setCostInUSD(int costInUSD) {
         this.costInUSD = costInUSD;
         return this;
     }
 
-    public TourBuilder setPreviewPath(String previewPath) {
-        this.previewPath = previewPath;
+    public TourBuilder setPreviewFile(String previewFile) {
+        this.previewFile = previewFile;
         return this;
     }
 
     public Tour build() {
         return new Tour(id, name, info, country, state, type, isHot, date, nightsCount, hotelRating, hotelName,
-                transferType, costInUSD, previewPath);
+                transferType, costInUSD, previewFile);
     }
 }
