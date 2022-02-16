@@ -1,13 +1,20 @@
 package com.gmail.vleynik.olad.travelagency.dao;
 
+import com.gmail.vleynik.olad.travelagency.dao.builders.TourBuilder;
+import com.gmail.vleynik.olad.travelagency.dao.builders.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.dao.entity.Tour;
+import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Locale;
 
 public class TourDAO implements DAO<Tour> {
     private static final String INSERT_TOUR_QUERY =
             "INSERT INTO tours VALUES (DEFAULT, ?, ?, ?, DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_BY_ID_TOUR_QUERY = "SELECT * FROM tours WHERE id=?";
 
     @Override
     public int addNew(Tour tour) {
@@ -36,7 +43,39 @@ public class TourDAO implements DAO<Tour> {
 
     @Override
     public Tour getById(int id) throws SQLException {
-        return null;
+        Tour tour = new Tour();
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_TOUR_QUERY)) {
+
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (!rs.isBeforeFirst()) {
+                tour.setId(-1);
+                return tour;
+            }
+
+            rs.next();
+
+            tour = new TourBuilder()
+                    .setId(rs.getInt("id"))
+                    .setName(rs.getString("name"))
+                    .setType(Tour.TourType.valueOf(rs.getString("type")))
+                    .setState(Tour.State.valueOf(rs.getString("state")))
+                    .setInfo(rs.getString("info"))
+                    .setCountry(rs.getString("country"))
+                    .setDate(rs.getDate("date").toLocalDate())
+                    .setTransferType(Tour.TransferType.valueOf(rs.getString("transferType")))
+                    .setHotelName(rs.getString("hotelName"))
+                    .setHot(rs.getBoolean("isHot"))
+                    .setHotelRating(rs.getInt("hotelRating"))
+                    .setNightsCount(rs.getInt("nightsCount"))
+                    .setCostInUSD(rs.getInt("costInUSD"))
+                    .setPreviewFile(rs.getString("previewFile"))
+                    .build();
+        }
+        return tour;
     }
 
     @Override

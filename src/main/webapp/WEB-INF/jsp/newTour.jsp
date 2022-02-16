@@ -208,11 +208,11 @@
                                 <label class="custom-file-label" for="previewFile"><fmt:message key="choose.file"/></label>
                             </div>
                         </div>
-                        <div class="form-group col-2">
+                        <div class="form-group col-3">
                             <label for="price"><fmt:message key="price"/></label>
                             <div class="input-group">
                                 <input type="number" class="form-control" id="price" name="price">
-                                <div class="input-group-append pr-5">
+                                <div class="input-group-append pr-5 mr-3">
                                     <span class="input-group-text">$</span>
                                 </div>
                                 <label id="price-error" class="error order-last" for="price" style="display: none;"></label>

@@ -9,7 +9,12 @@ import org.apache.log4j.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalTime;
 
 /**
@@ -27,16 +32,48 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        boolean success = true;
         log.debug("start context initialization");
 
         try {
             ConnectionUtil.init();
             removeExpiredEntryExecutor.startExecutionAt(LocalTime.of(0, 0), 24);
-            log.debug("context has been successfully initialized");
+            log.debug("database connection has been successfully initialized");
         } catch (IOException e) {
-            log.fatal(e.getMessage());
-            log.fatal("context initialization failed");
+            success = false;
+            log.fatal("database connection initialization failed");
         }
+
+        try {
+            String noImageFile = new File(".").getCanonicalPath() + File.separator
+                    + "tours_images" + File.separator + "no-image.jpg";
+
+            InputStream is = this.getClass().getClassLoader().getResourceAsStream("no-image.jpg");
+
+            if (is == null) {
+                throw new IOException();
+            }
+
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(noImageFile));
+
+            byte[] buffer = new byte[1024];
+            int lengthRead;
+            while ((lengthRead = is.read(buffer)) > 0) {
+                os.write(buffer, 0, lengthRead);
+                os.flush();
+            }
+
+            is.close();
+            os.close();
+        } catch (IOException e) {
+            success = false;
+            log.fatal("no-image.jpg coping failed");
+        }
+
+        if (success)
+            log.debug("application has been successfully initialized");
+        else
+            log.fatal("application initialization failed");
     }
 
     @Override

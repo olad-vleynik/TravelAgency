@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -80,14 +81,16 @@ public class TourServiceServlet extends HttpServlet {
                     }
                     Part filePart = request.getPart("previewFile");
                     fileName = randomString() + filePart.getSubmittedFileName();
-                    if (fileName.length() > 10)
+                    if (fileName.length() > 11)
                         filePart.write(imagesPath + fileName);
 
-                    tour.setPreviewFile(imagesPath + fileName);
+                    tour.setPreviewFile(fileName);
                 } catch (IOException e) {
                     e.printStackTrace();
                     log.error("can't upload image file");
                 }
+            } else {
+                tour.setPreviewFile("no-image.jpg");
             }
 
             tour.setId(tourDAO.addNew(tour));
@@ -107,10 +110,31 @@ public class TourServiceServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         if (request.getParameter("id") != null) {
-            //TODO id exists check, setAttribute to tour, numeric check
+            try {
+                String imagesPath = new File(".").getCanonicalPath() + File.separator + "tours_images" + File.separator;
+                TourDAO tourDAO = new TourDAO();
+                Tour tour = tourDAO.getById(Integer.parseInt(request.getParameter("id")));
 
-            session.removeAttribute("tourToView"); //TODO remove to tour details
-            request.getRequestDispatcher(TOUR_DETAILS_JSP).forward(request, response);
+                if (tour.getId() == -1)
+                    response.sendError(404);
+
+                String tourImagePath = imagesPath + tour.getPreviewFile();
+
+                if (new File(tourImagePath).exists()) {
+                    String image = "file://" + imagesPath + tour.getPreviewFile();
+                    request.setAttribute("tourImagePath", image.replaceAll("\\\\", "/"));
+                } else {
+                    String image = "file://" + imagesPath + "no-image.jpg";
+                    request.setAttribute("tourImagePath", image.replaceAll("\\\\", "/"));
+                }
+
+                request.setAttribute("tour", tour);
+                request.getRequestDispatcher(TOUR_DETAILS_JSP).forward(request, response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                log.error("can't get tour from database");
+                response.sendError(503);
+            }
         } else if (request.getParameter("action").equals("add") && isAdminOrManager(session)) {
             request.getRequestDispatcher(NEW_TOUR_JSP).forward(request, response);
         } else {
@@ -134,6 +158,7 @@ public class TourServiceServlet extends HttpServlet {
                     (random.nextFloat() * (rightLimit - leftLimit + 1));
             buffer.append((char) randomLimitedInt);
         }
+        buffer.append("-");
 
         return buffer.toString();
     }
