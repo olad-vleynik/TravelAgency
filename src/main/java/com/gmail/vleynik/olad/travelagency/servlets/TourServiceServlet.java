@@ -135,16 +135,12 @@ public class TourServiceServlet extends HttpServlet {
                 log.error("can't get tour from database");
                 response.sendError(503);
             }
-        } else if (request.getParameter("action").equals("add") && isAdminOrManager(session)) {
+        } else if (request.getParameter("action").equals("add")
+                && session.getAttribute("user_access_level") == User.AccessLevel.ADMINISTRATOR) {
             request.getRequestDispatcher(NEW_TOUR_JSP).forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/");
         }
-    }
-
-    private boolean isAdminOrManager(HttpSession session) {
-        return session.getAttribute("user_access_level") == User.AccessLevel.ADMINISTRATOR
-                || session.getAttribute("user_access_level") == User.AccessLevel.MANAGER;
     }
 
     private String randomString() {

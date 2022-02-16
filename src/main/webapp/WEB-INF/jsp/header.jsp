@@ -29,7 +29,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <c:if test="${not empty user_id}">
-                <c:if test="${user_access_level == 'ADMINISTRATOR' || user_access_level == 'MANAGER' }">
+                <c:if test="${user_access_level == 'ADMINISTRATOR'}">
                     <li class="nav-item active mr-3">
                         <a class="nav-link" href="/tour?action=add"><fmt:message key="add.tour"/></a>
                     </li>

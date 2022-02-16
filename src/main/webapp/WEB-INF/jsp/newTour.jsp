@@ -215,7 +215,7 @@
                                 <div class="input-group-append pr-5 mr-3">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <label id="price-error" class="error order-last" for="price" style="display: none;"></label>
+                                <label id="price-error" class="error order-last mr-3" for="price" style="display: none;"></label>
                             </div>
                         </div>
                     </div>
