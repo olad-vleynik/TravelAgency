@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.travelagency.utils;
+package com.gmail.vleynik.olad.travelagency.services;
 
 import org.apache.log4j.Logger;
 

@@ -3,7 +3,7 @@ package com.gmail.vleynik.olad.travelagency.servlets;
 import com.gmail.vleynik.olad.travelagency.dao.TourDAO;
 import com.gmail.vleynik.olad.travelagency.dao.builders.TourBuilder;
 import com.gmail.vleynik.olad.travelagency.dao.entity.Tour;
-import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
+import com.gmail.vleynik.olad.travelagency.services.UserInputCheckService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -45,7 +45,7 @@ public class AddTourServlet extends HttpServlet {
         String price = request.getParameter("price");
         String hot = request.getParameter("hot");
 
-        if (UserInputCheck.isAllFilled(tourName, tourType, info, departure, transfer, hotelName, rating, nights, price)) {
+        if (UserInputCheckService.isAllFilled(tourName, tourType, info, departure, transfer, hotelName, rating, nights, price)) {
             TourDAO tourDAO = new TourDAO();
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 

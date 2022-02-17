@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.travelagency.utils;
+package com.gmail.vleynik.olad.travelagency.services;
 
 import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @author Vladyslav Oliinyk.
  * @version 1.0
  */
-public class UserInputCheck {
+public class UserInputCheckService {
 
     private static final int MIN_PASSWORD_LENGTH = 5;
     
@@ -22,7 +22,7 @@ public class UserInputCheck {
      *
      * @throws IllegalStateException on calling
      */
-    private UserInputCheck() {
+    private UserInputCheckService() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -36,11 +36,11 @@ public class UserInputCheck {
     /**
      * Method validates input data by specific rules and checks uniqueness of phone number and e-mail
      *
-     * @param email       - email check in {@link UserInputCheck#validEmail}
-     * @param phoneNumber - phone check in {@link UserInputCheck#validPhoneNumber}
-     * @param password    - password check in {@link UserInputCheck#validPassword}
-     * @param name        - name check in {@link UserInputCheck#validName}
-     * @param surname     - surname check in {@link UserInputCheck#validName}
+     * @param email       - email check in {@link UserInputCheckService#validEmail}
+     * @param phoneNumber - phone check in {@link UserInputCheckService#validPhoneNumber}
+     * @param password    - password check in {@link UserInputCheckService#validPassword}
+     * @param name        - name check in {@link UserInputCheckService#validName}
+     * @param surname     - surname check in {@link UserInputCheckService#validName}
      * @return true if entered data is correct and unique, or false if something is not correct or not unique
      */
     public static boolean isValidAndNotDuplicate(String email, String phoneNumber, String password, String name, String surname) throws SQLException {
@@ -64,7 +64,7 @@ public class UserInputCheck {
     }
 
     /**
-     * Method checks that e-mail matches regex {@link UserInputCheck#VALID_EMAIL_ADDRESS_REGEX}
+     * Method checks that e-mail matches regex {@link UserInputCheckService#VALID_EMAIL_ADDRESS_REGEX}
      * and user with such e-mail is not present in the database
      *
      * @param email - email to check
@@ -77,7 +77,7 @@ public class UserInputCheck {
     }
 
     /**
-     * Method checks that phone number matches regex {@link UserInputCheck#VALID_PHONE_NUMBER_REGEX}
+     * Method checks that phone number matches regex {@link UserInputCheckService#VALID_PHONE_NUMBER_REGEX}
      * and user with such phone number is not present in the database
      *
      * @param phoneNumber - phone number to check
@@ -90,7 +90,7 @@ public class UserInputCheck {
     }
 
     /**
-     * Method checks that password is not shorter than {@link UserInputCheck#MIN_PASSWORD_LENGTH}
+     * Method checks that password is not shorter than {@link UserInputCheckService#MIN_PASSWORD_LENGTH}
      *
      * @param password - password to check
      * @return true if password is correct, or password is too short
@@ -101,7 +101,7 @@ public class UserInputCheck {
 
     /**
      * Method checks that name (or surname) starts with capital letter, and name length is longer than 2 symbols,
-     * regex - {@link UserInputCheck#VALID_NAME_REGEX}
+     * regex - {@link UserInputCheckService#VALID_NAME_REGEX}
      *
      * @param name - name or surname to check
      * @return true if name (or surname) is correct, or false if not

@@ -4,11 +4,10 @@ import com.gmail.vleynik.olad.travelagency.dao.UserDAO;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 import com.gmail.vleynik.olad.travelagency.dao.builders.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.utils.PasswordUtil;
-import com.gmail.vleynik.olad.travelagency.utils.UserInputCheck;
+import com.gmail.vleynik.olad.travelagency.services.UserInputCheckService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +46,7 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email").toLowerCase();
         String birthday = request.getParameter("birthday");
         try {
-            if (UserInputCheck.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
+            if (UserInputCheckService.isValidAndNotDuplicate(email, phoneNumber, password, name, surname)) {
                 userDAO = new UserDAO();
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 

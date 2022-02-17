@@ -31,7 +31,7 @@
             <c:if test="${not empty sessionScope.user_id}">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        ${user_full_name}
+                        ${sessionScope.user_full_name}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
                         <a class="dropdown-item" href="#"><fmt:message key="profile.orders"/></a>

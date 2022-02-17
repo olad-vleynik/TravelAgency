@@ -1,7 +1,7 @@
 package com.gmail.vleynik.olad.travelagency.dao;
 
 import com.gmail.vleynik.olad.travelagency.dao.entity.SavedEntry;
-import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
+import com.gmail.vleynik.olad.travelagency.services.ConnectionService;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ public class SavedEntryDAO{
     private static final String UPDATE_EXPIRE_DATE = "UPDATE saved_entries SET validUntil=?  WHERE userID=?";
 
     public int addNew(SavedEntry savedEntry) {
-        try (Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
 
             preparedStatement.setString(1, savedEntry.getUuId());
@@ -34,7 +34,7 @@ public class SavedEntryDAO{
 
     public SavedEntry getById(int id) {
         SavedEntry savedEntry = new SavedEntry("-1", id, LocalDate.now());
-        try (Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_USER_ID_QUERY)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
@@ -52,7 +52,7 @@ public class SavedEntryDAO{
 
     public SavedEntry getByUUID(String uuId) {
         SavedEntry savedEntry = new SavedEntry(uuId, -1, LocalDate.now());
-        try (Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_UUID_QUERY)) {
             preparedStatement.setString(1, uuId);
             ResultSet rs = preparedStatement.executeQuery();
@@ -69,7 +69,7 @@ public class SavedEntryDAO{
     }
 
     public void update(SavedEntry savedEntry) {
-        try (Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_EXPIRE_DATE)) {
 
             preparedStatement.setDate(1, Date.valueOf(savedEntry.getValidUntil()));
@@ -85,7 +85,7 @@ public class SavedEntryDAO{
     }
 
     public void deleteByUUID(String uuid) {
-        try (Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SAVED_ENTRY_QUERY)) {
 
             preparedStatement.setString(1, uuid);
@@ -96,7 +96,7 @@ public class SavedEntryDAO{
     }
 
     public void deleteExpiredSessions() {
-        try (Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_EXPIRED_ENTRIES_QUERY)) {
 
             preparedStatement.executeUpdate();

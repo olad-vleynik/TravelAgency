@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.travelagency.utils.tasks;
+package com.gmail.vleynik.olad.travelagency.services.tasks;
 
 import com.gmail.vleynik.olad.travelagency.dao.SavedEntryDAO;
 
