@@ -12,33 +12,35 @@ public class Tour implements Serializable {
     private String name;
     private String info;
     private String country;
-    private State state;
-    private TourType type;
+    private TourState tourState;
+    private TourType tourType;
     private boolean isHot;
     private LocalDate date;
     private int nightsCount;
+    private int personsCount;
     private int hotelRating;
     private String hotelName;
     private TransferType transferType;
-    private int costInUSD;
+    private int cost;
     private String previewFile;
 
-    public Tour(int id, String name, String info, String country, State state, TourType type,
-                boolean isHot, LocalDate date, int nightsCount, int hotelRating, String hotelName,
-                TransferType transferType, int costInUSD, String previewFile) {
+    public Tour(int id, String name, String info, String country, TourState tourState, TourType tourType,
+                boolean isHot, LocalDate date, int nightsCount, int personsCount, int hotelRating, String hotelName,
+                TransferType transferType, int cost, String previewFile) {
         this.id = id;
         this.name = name;
         this.info = info;
         this.country = country;
-        this.state = state;
-        this.type = type;
+        this.tourState = tourState;
+        this.tourType = tourType;
         this.isHot = isHot;
         this.date = date;
         this.nightsCount = nightsCount;
+        this.personsCount = personsCount;
         this.hotelRating = hotelRating;
         this.hotelName = hotelName;
         this.transferType = transferType;
-        this.costInUSD = costInUSD;
+        this.cost = cost;
         this.previewFile = previewFile;
     }
 
@@ -67,7 +69,7 @@ public class Tour implements Serializable {
         return info;
     }
 
-    public Tour setInfo(String info) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setInfo(String info) {
         this.info = info;
         return this;
     }
@@ -81,21 +83,21 @@ public class Tour implements Serializable {
         return this;
     }
 
-    public State getState() {
-        return state;
+    public TourState getTourState() {
+        return tourState;
     }
 
-    public Tour setState(State state) {
-        this.state = state;
+    public Tour setTourState(TourState tourState) {
+        this.tourState = tourState;
         return this;
     }
 
-    public TourType getType() {
-        return type;
+    public TourType getTourType() {
+        return tourType;
     }
 
-    public Tour setType(TourType type) {
-        this.type = type;
+    public Tour setTourType(TourType tourType) {
+        this.tourType = tourType;
         return this;
     }
 
@@ -103,7 +105,7 @@ public class Tour implements Serializable {
         return isHot;
     }
 
-    public Tour setHot(boolean hot) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setHot(boolean hot) {
         isHot = hot;
         return this;
     }
@@ -112,7 +114,7 @@ public class Tour implements Serializable {
         return date;
     }
 
-    public Tour setDate(LocalDate date) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setDate(LocalDate date) {
         this.date = date;
         return this;
     }
@@ -121,7 +123,7 @@ public class Tour implements Serializable {
         return nightsCount;
     }
 
-    public Tour setNightsCount(int nightsCount) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setNightsCount(int nightsCount) {
         this.nightsCount = nightsCount;
         return this;
     }
@@ -130,7 +132,7 @@ public class Tour implements Serializable {
         return hotelRating;
     }
 
-    public Tour setHotelRating(int hotelRating) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setHotelRating(int hotelRating) {
         this.hotelRating = hotelRating;
         return this;
     }
@@ -139,7 +141,7 @@ public class Tour implements Serializable {
         return hotelName;
     }
 
-    public Tour setHotelName(String hotelName) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setHotelName(String hotelName) {
         this.hotelName = hotelName;
         return this;
     }
@@ -148,17 +150,17 @@ public class Tour implements Serializable {
         return transferType;
     }
 
-    public Tour setTransferType(TransferType transferType) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setTransferType(TransferType transferType) {
         this.transferType = transferType;
         return this;
     }
 
-    public int getCostInUSD() {
-        return costInUSD;
+    public int getCost() {
+        return cost;
     }
 
-    public Tour setCostInUSD(int costInUSD) {
-        this.costInUSD = costInUSD;
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setCost(int cost) {
+        this.cost = cost;
         return this;
     }
 
@@ -166,46 +168,79 @@ public class Tour implements Serializable {
         return previewFile;
     }
 
-    public Tour setPreviewFile(String previewFile) {
+    public com.gmail.vleynik.olad.travelagency.dao.entity.Tour setPreviewFile(String previewFile) {
         this.previewFile = previewFile;
         return this;
     }
 
+    public int getPersonsCount() {
+        return personsCount;
+    }
+
+    public void setPersonsCount(int personsCount) {
+        this.personsCount = personsCount;
+    }
+
     public enum TourType {
-        RELAX,
-        SIGHTSEEING,
-        SHOPPING
+        RELAX("relax"),
+        SIGHTSEEING("sightseeing"),
+        SHOPPING("shopping");
+
+        private String name;
+
+        private TourType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
     public enum TransferType {
-        AIRPLANE,
-        BUS,
-        TRAIN,
-        CRUISE_LINER
+        AIRPLANE("airplane"),
+        BUS("bus"),
+        TRAIN("train"),
+        CRUISE_LINER("cruise.liner");
+
+        private String name;
+
+        private TransferType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
-    public enum State {
-        AVAILABLE,
-        ONGOING,
-        COMPLETED,
-        CANCELED
+    public enum TourState {
+        AVAILABLE("available"),
+        ONGOING("ongoing"),
+        COMPLETED("completed"),
+        CANCELED("canceled");
+
+        private String name;
+
+        private TourState(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Tour tour = (Tour) o;
-        return id == tour.id && isHot == tour.isHot && nightsCount == tour.nightsCount && hotelRating == tour.hotelRating
-                && Double.compare(tour.costInUSD, costInUSD) == 0 && Objects.equals(name, tour.name)
-                && Objects.equals(info, tour.info) && Objects.equals(country, tour.country) && state == tour.state
-                && type == tour.type && Objects.equals(date, tour.date) && Objects.equals(hotelName, tour.hotelName)
-                && transferType == tour.transferType && Objects.equals(previewFile, tour.previewFile);
+        com.gmail.vleynik.olad.travelagency.dao.entity.Tour tour = (com.gmail.vleynik.olad.travelagency.dao.entity.Tour) o;
+        return id == tour.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, info, country, state, type, isHot, date, nightsCount, hotelRating, hotelName,
-                transferType, costInUSD, previewFile);
+        return Objects.hash(id);
     }
 }

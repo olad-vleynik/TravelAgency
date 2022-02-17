@@ -33,6 +33,7 @@ public class AutoLoginFilter implements Filter {
     private static final String USER_ID = "user_id";
     private static final String USER_FULL_NAME = "user_full_name";
     private static final String USER_ACCESS_LEVEL = "user_access_level";
+    private static final String USER_BALANCE = "user_balance";
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain next)
             throws IOException, ServletException {
@@ -67,6 +68,7 @@ public class AutoLoginFilter implements Filter {
                     session.setAttribute(USER_FULL_NAME, user.getName() + " " + user.getSurname());
                     session.setAttribute(USER_ID, user.getId());
                     session.setAttribute(USER_ACCESS_LEVEL, user.getAccessLevel());
+                    session.setAttribute(USER_BALANCE, user.getBalanceInUSD());
 
                     Cookie localeCookie = new Cookie("uniqueId", uuid);
                     localeCookie.setPath("/");

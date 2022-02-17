@@ -10,11 +10,12 @@ public class TourBuilder {
     private String name;
     private String info;
     private String country;
-    private Tour.State state;
+    private Tour.TourState state;
     private Tour.TourType type;
     private boolean isHot;
     private LocalDate date;
     private int nightsCount;
+    private int personsCount;
     private int hotelRating;
     private String hotelName;
     private Tour.TransferType transferType;
@@ -41,7 +42,7 @@ public class TourBuilder {
         return this;
     }
 
-    public TourBuilder setState(Tour.State state) {
+    public TourBuilder setState(Tour.TourState state) {
         this.state = state;
         return this;
     }
@@ -63,6 +64,11 @@ public class TourBuilder {
 
     public TourBuilder setNightsCount(int nightsCount) {
         this.nightsCount = nightsCount;
+        return this;
+    }
+
+    public TourBuilder setPersonsCount(int personsCount) {
+        this.personsCount = personsCount;
         return this;
     }
 
@@ -92,7 +98,7 @@ public class TourBuilder {
     }
 
     public Tour build() {
-        return new Tour(id, name, info, country, state, type, isHot, date, nightsCount, hotelRating, hotelName,
-                transferType, costInUSD, previewFile);
+        return new Tour(id, name, info, country, state, type, isHot, date, nightsCount, personsCount,
+                hotelRating, hotelName, transferType, costInUSD, previewFile);
     }
 }

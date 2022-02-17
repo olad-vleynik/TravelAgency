@@ -28,6 +28,7 @@ public class RegistrationServlet extends HttpServlet {
     private static final String USER_ID = "user_id";
     private static final String USER_FULL_NAME = "user_full_name";
     private static final String USER_ACCESS_LEVEL = "user_access_level";
+    private static final String USER_BALANCE = "user_balance";
 
     private static final String ENTRY_JSP = "/WEB-INF/jsp/entry.jsp";
 
@@ -62,6 +63,7 @@ public class RegistrationServlet extends HttpServlet {
                 session.setAttribute(USER_ID, newUser.getId());
                 session.setAttribute(USER_ACCESS_LEVEL, newUser.getAccessLevel());
                 session.setAttribute(USER_FULL_NAME, newUser.getName() + " " + newUser.getSurname());
+                session.setAttribute(USER_BALANCE, 0);
 
                 response.sendRedirect(request.getContextPath() + "/");
             } else {

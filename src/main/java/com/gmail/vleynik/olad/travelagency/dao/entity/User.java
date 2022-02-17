@@ -2,7 +2,6 @@ package com.gmail.vleynik.olad.travelagency.dao.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 public class User implements Serializable {
@@ -45,9 +44,19 @@ public class User implements Serializable {
     }
 
     public enum AccessLevel {
-        ADMINISTRATOR,
-        MANAGER,
-        CLIENT
+        ADMINISTRATOR("administrator"),
+        MANAGER("manager"),
+        CLIENT("client");
+
+        private String name;
+
+        private AccessLevel(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
     public int getId() {
@@ -169,11 +178,11 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Double.compare(user.balanceInUSD, balanceInUSD) == 0 && Double.compare(user.personalDiscount, personalDiscount) == 0 && Double.compare(user.maxDiscount, maxDiscount) == 0 && isBanned == user.isBanned && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(birthDay, user.birthDay) && accessLevel == user.accessLevel;
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, phoneNumber, email, password, birthDay, balanceInUSD, personalDiscount, maxDiscount, isBanned, accessLevel);
+        return Objects.hash(id);
     }
 }

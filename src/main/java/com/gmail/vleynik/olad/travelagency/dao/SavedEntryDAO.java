@@ -7,7 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class SavedEntryDAO implements DAO<SavedEntry>{
+public class SavedEntryDAO{
 
     private static final String INSERT_QUERY = "INSERT INTO saved_entries VALUES (?,?,?)";
     private static final String SELECT_BY_USER_ID_QUERY = "SELECT * FROM saved_entries WHERE userID=?";
@@ -16,7 +16,6 @@ public class SavedEntryDAO implements DAO<SavedEntry>{
     private static final String DELETE_EXPIRED_ENTRIES_QUERY = "DELETE FROM saved_entries WHERE `validUntil` < NOW()";
     private static final String UPDATE_EXPIRE_DATE = "UPDATE saved_entries SET validUntil=?  WHERE userID=?";
 
-    @Override
     public int addNew(SavedEntry savedEntry) {
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
@@ -33,7 +32,6 @@ public class SavedEntryDAO implements DAO<SavedEntry>{
         }
     }
 
-    @Override
     public SavedEntry getById(int id) {
         SavedEntry savedEntry = new SavedEntry("-1", id, LocalDate.now());
         try (Connection connection = ConnectionUtil.getConnection();
@@ -70,7 +68,6 @@ public class SavedEntryDAO implements DAO<SavedEntry>{
         return savedEntry;
     }
 
-    @Override
     public void update(SavedEntry savedEntry) {
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_EXPIRE_DATE)) {
@@ -83,7 +80,6 @@ public class SavedEntryDAO implements DAO<SavedEntry>{
         }
     }
 
-    @Override
     public void delete(int id) {
         throw new IllegalStateException("please use deleteByUUID(String uuid) method");
     }

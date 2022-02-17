@@ -25,6 +25,7 @@ public class LoginServlet extends HttpServlet {
     private static final String USER_ACCESS_LEVEL = "user_access_level";
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+    private static final String USER_BALANCE = "user_balance";
 
     private static final String ENTRY_JSP = "/WEB-INF/jsp/entry.jsp";
 
@@ -51,6 +52,7 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute(USER_FULL_NAME, user.getName() + " " + user.getSurname());
                 session.setAttribute(USER_ID, user.getId());
                 session.setAttribute(USER_ACCESS_LEVEL, user.getAccessLevel());
+                session.setAttribute(USER_BALANCE, user.getBalanceInUSD());
 
                 if (request.getParameter("remember") != null){
                     SavedEntryDAO savedEntryDAO = new SavedEntryDAO();
@@ -102,6 +104,7 @@ public class LoginServlet extends HttpServlet {
                 session.removeAttribute(USER_FULL_NAME);
                 session.removeAttribute(USER_ID);
                 session.removeAttribute(USER_ACCESS_LEVEL);
+                session.removeAttribute(USER_BALANCE);
             }
             response.sendRedirect(request.getContextPath() + "/");
         }

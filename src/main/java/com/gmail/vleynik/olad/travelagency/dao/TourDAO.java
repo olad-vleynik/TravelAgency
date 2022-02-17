@@ -1,22 +1,23 @@
 package com.gmail.vleynik.olad.travelagency.dao;
 
 import com.gmail.vleynik.olad.travelagency.dao.builders.TourBuilder;
-import com.gmail.vleynik.olad.travelagency.dao.builders.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.dao.entity.Tour;
-import com.gmail.vleynik.olad.travelagency.dao.entity.User;
 import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Locale;
 
-public class TourDAO implements DAO<Tour> {
+public class TourDAO {
     private static final String INSERT_TOUR_QUERY =
             "INSERT INTO tours VALUES (DEFAULT, ?, ?, ?, DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_BY_ID_TOUR_QUERY = "SELECT * FROM tours WHERE id=?";
 
-    @Override
+    public static final String SELECT_TOUR_BY_ID = "SELECT tours.*, tour_states.name AS tourState, tour_types.name "
+            + "AS tourType, transfer_types.name AS transferType FROM tours LEFT JOIN tour_states "
+            + "ON tourStateId=tour_states.id LEFT JOIN tour_types ON tourTypeId=tour_types.id "
+            + "LEFT JOIN transfer_types ON transferTypeId=transfer_types.id WHERE tours.id=?";
+
+    private static final String UPDATE_TOUR_QUERY = "UPDATE tours SET name=? WHERE id=?";
+
     public int addNew(Tour tour) {
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TOUR_QUERY, Statement.RETURN_GENERATED_KEYS)) {
@@ -24,29 +25,32 @@ public class TourDAO implements DAO<Tour> {
             preparedStatement.setString(1, tour.getName());
             preparedStatement.setString(2, tour.getInfo());
             preparedStatement.setString(3, tour.getCountry());
-            preparedStatement.setString(4, tour.getType().name());
+            preparedStatement.setInt(4, tour.getTourType().ordinal());
             preparedStatement.setBoolean(5, tour.isHot());
             preparedStatement.setDate(6, Date.valueOf(tour.getDate()));
             preparedStatement.setInt(7, tour.getNightsCount());
             preparedStatement.setInt(8, tour.getHotelRating());
             preparedStatement.setString(9, tour.getHotelName());
-            preparedStatement.setString(10, tour.getTransferType().name());
-            preparedStatement.setInt(11, tour.getCostInUSD());
+            preparedStatement.setInt(10, tour.getTransferType().ordinal());
+            preparedStatement.setInt(11, tour.getCost());
             preparedStatement.setString(12, tour.getPreviewFile());
 
-            return preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            generatedKeys.next();
+
+            return (int) generatedKeys.getLong(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
     }
 
-    @Override
     public Tour getById(int id) throws SQLException {
         Tour tour = new Tour();
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_TOUR_QUERY)) {
-
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_TOUR_BY_ID)) {
 
             preparedStatement.setInt(1, id);
 
@@ -61,12 +65,12 @@ public class TourDAO implements DAO<Tour> {
             tour = new TourBuilder()
                     .setId(rs.getInt("id"))
                     .setName(rs.getString("name"))
-                    .setType(Tour.TourType.valueOf(rs.getString("type")))
-                    .setState(Tour.State.valueOf(rs.getString("state")))
+                    .setType(Tour.TourType.valueOf(rs.getString("tourType").toUpperCase(Locale.ROOT)))
+                    .setState(Tour.TourState.valueOf(rs.getString("tourState").toUpperCase(Locale.ROOT)))
                     .setInfo(rs.getString("info"))
                     .setCountry(rs.getString("country"))
                     .setDate(rs.getDate("date").toLocalDate())
-                    .setTransferType(Tour.TransferType.valueOf(rs.getString("transferType")))
+                    .setTransferType(Tour.TransferType.valueOf(rs.getString("transferType").toUpperCase(Locale.ROOT).replace(' ', '_')))
                     .setHotelName(rs.getString("hotelName"))
                     .setHot(rs.getBoolean("isHot"))
                     .setHotelRating(rs.getInt("hotelRating"))
@@ -78,12 +82,18 @@ public class TourDAO implements DAO<Tour> {
         return tour;
     }
 
-    @Override
     public void update(Tour tour) {
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TOUR_QUERY)) {
 
+            preparedStatement.setString(1, tour.getName());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
     public void delete(int id) {
 
     }

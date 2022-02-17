@@ -126,7 +126,7 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/userHeader.jsp" />
 
 <div class="container">
     <div class="row">
@@ -195,9 +195,13 @@
                                 <option value="5star"><fmt:message key="5star"/></option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-1 mr-3">
                             <label class="form-label" for="nights"><fmt:message key="nights"/></label>
-                            <input type="number" id="nights" class="form-control col-4" value="1" name="nights"/>
+                            <input type="number" id="nights" class="form-control" value="1" name="nights"/>
+                        </div>
+                        <div class="form-group col-1">
+                            <label class="form-label" for="persons"><fmt:message key="persons"/></label>
+                            <input type="number" id="persons" class="form-control" value="1" name="persons"/>
                         </div>
                     </div>
                     <div class="form-row mb-4">
@@ -272,7 +276,7 @@
             rules: {
                 tourName: {
                     required: true,
-                    maxlength: 20
+                    maxlength: 40
                 },
                 tourType: {
                     required: true
@@ -298,6 +302,10 @@
                     required: true,
                     min: 1
                 },
+                persons: {
+                    required: true,
+                    min: 1
+                },
                 price: {
                     required: true,
                     min: 1
@@ -311,7 +319,7 @@
             messages: {
                 tourName: {
                     required: "<fmt:message key="please.enter.tour.name"/>",
-                    maxlength: "<fmt:message key="max.length.twenty"/>"
+                    maxlength: "<fmt:message key="max.length.forty"/>"
                 },
                 tourType: "<fmt:message key="please.choose"/>",
                 info: {
@@ -326,8 +334,12 @@
                 },
                 rating: "<fmt:message key="please.choose"/>",
                 nights: {
-                    required: "<fmt:message key="please.enter.nights"/>",
-                    min: "<fmt:message key="min.one"/>"
+                    required: "<fmt:message key="required"/>",
+                    min: "<fmt:message key="min.one.short"/>"
+                },
+                persons: {
+                    required: "<fmt:message key="required"/>",
+                    min: "<fmt:message key="min.one.short"/>"
                 },
                 price: {
                     required: "<fmt:message key="please.enter.price"/>",
