@@ -1,6 +1,6 @@
 package com.gmail.vleynik.olad.travelagency.listeners;
 
-import com.gmail.vleynik.olad.travelagency.services.ConnectionService;
+import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 import com.gmail.vleynik.olad.travelagency.services.TaskExecutorService;
 import com.gmail.vleynik.olad.travelagency.services.tasks.RemoveExpiredEntryTask;
 import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
@@ -30,7 +30,7 @@ public class ContextListener implements ServletContextListener {
         log.debug("start context initialization");
 
         try {
-            ConnectionService.init();
+            ConnectionUtil.init();
             removeExpiredEntryExecutor.startExecutionAt(LocalTime.of(0, 0), 24);
             log.debug("application has been successfully initialized");
         } catch (IOException e) {

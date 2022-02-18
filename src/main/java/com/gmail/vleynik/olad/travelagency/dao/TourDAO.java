@@ -2,7 +2,7 @@ package com.gmail.vleynik.olad.travelagency.dao;
 
 import com.gmail.vleynik.olad.travelagency.dao.builders.TourBuilder;
 import com.gmail.vleynik.olad.travelagency.dao.entity.Tour;
-import com.gmail.vleynik.olad.travelagency.services.ConnectionService;
+import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 
 import java.sql.*;
 import java.util.Locale;
@@ -19,7 +19,7 @@ public class TourDAO {
     private static final String UPDATE_TOUR_QUERY = "UPDATE tours SET name=? WHERE id=?";
 
     public int addNew(Tour tour) {
-        try (Connection connection = ConnectionService.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TOUR_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, tour.getName());
@@ -49,7 +49,7 @@ public class TourDAO {
 
     public Tour getById(int id) throws SQLException {
         Tour tour = new Tour();
-        try (Connection connection = ConnectionService.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_TOUR_BY_ID)) {
 
             preparedStatement.setInt(1, id);
@@ -83,7 +83,7 @@ public class TourDAO {
     }
 
     public void update(Tour tour) {
-        try (Connection connection = ConnectionService.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TOUR_QUERY)) {
 
             preparedStatement.setString(1, tour.getName());

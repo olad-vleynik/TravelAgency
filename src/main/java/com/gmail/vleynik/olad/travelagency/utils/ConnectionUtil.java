@@ -1,4 +1,4 @@
-package com.gmail.vleynik.olad.travelagency.services;
+package com.gmail.vleynik.olad.travelagency.utils;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author Vladyslav Oliinyk.
  * @version 1.0
  */
-public class ConnectionService {
+public class ConnectionUtil {
     private static final String PROPERTIES_FILE = "/database.properties";
     private static final int INIT_CONNECTIONS_COUNT = 5;
     private static final int MAX_CONNECTIONS_COUNT = 10;
@@ -25,15 +25,15 @@ public class ConnectionService {
      *
      * @throws IllegalStateException on calling
      */
-    private ConnectionService() {
+    private ConnectionUtil() {
         throw new IllegalStateException("Utility class");
     }
 
     /**
      * Provides connection from connection pool
      *
-     * @return connection from connection pool declared in {@link ConnectionService#dataSource}
-     * @throws SQLException if {@link ConnectionService#dataSource} == null or DB is missing
+     * @return connection from connection pool declared in {@link ConnectionUtil#dataSource}
+     * @throws SQLException if {@link ConnectionUtil#dataSource} == null or DB is missing
      */
     public static Connection getConnection() throws SQLException {
         if (dataSource == null) {
@@ -43,16 +43,16 @@ public class ConnectionService {
     }
 
     /**
-     * Initialize connection pool {@link ConnectionService#dataSource}
+     * Initialize connection pool {@link ConnectionUtil#dataSource}
      *
-     * @throws FileNotFoundException if database properties file ({@link ConnectionService#PROPERTIES_FILE}) not found
-     * @throws IOException if input stream can't read database properties file ({@link ConnectionService#PROPERTIES_FILE})
+     * @throws FileNotFoundException if database properties file ({@link ConnectionUtil#PROPERTIES_FILE}) not found
+     * @throws IOException if input stream can't read database properties file ({@link ConnectionUtil#PROPERTIES_FILE})
      */
     public static void init() throws IOException {
         try {
             if (dataSource == null) {
                 Properties dataBaseProperties = new Properties();
-                InputStream propertiesInputStream = ConnectionService.class.getResourceAsStream(PROPERTIES_FILE);
+                InputStream propertiesInputStream = ConnectionUtil.class.getResourceAsStream(PROPERTIES_FILE);
 
                 if (propertiesInputStream == null)
                     throw new FileNotFoundException();

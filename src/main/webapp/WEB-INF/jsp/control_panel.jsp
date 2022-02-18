@@ -5,7 +5,7 @@
 <html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Control panel</title>
 </head>
 <body>
 

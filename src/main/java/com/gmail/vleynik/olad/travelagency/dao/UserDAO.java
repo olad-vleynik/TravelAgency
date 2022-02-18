@@ -2,7 +2,7 @@ package com.gmail.vleynik.olad.travelagency.dao;
 
 import com.gmail.vleynik.olad.travelagency.dao.builders.UserBuilder;
 import com.gmail.vleynik.olad.travelagency.dao.entity.User;
-import com.gmail.vleynik.olad.travelagency.services.ConnectionService;
+import com.gmail.vleynik.olad.travelagency.utils.ConnectionUtil;
 
 import java.sql.*;
 import java.util.Locale;
@@ -20,7 +20,7 @@ public class UserDAO {
     private static final String DELETE_USER_QUERY = "DELETE FROM users WHERE id=?";
 
     public int addNew(User user) {
-        try (Connection connection = ConnectionService.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, user.getName());
@@ -58,7 +58,7 @@ public class UserDAO {
 
     private User getUser(String query, String value, boolean isValueInt) throws SQLException {
         User user = new User();
-        try (Connection connection = ConnectionService.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 
@@ -93,7 +93,7 @@ public class UserDAO {
     }
 
     public void delete(int id) {
-        try (Connection connection = ConnectionService.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_QUERY)) {
 
             preparedStatement.setInt(1, id);
