@@ -24,12 +24,14 @@ public class AccessFilter implements Filter {
 
             String requestedServlet = req.getServletPath();
 
-            if (AccessFilterPaths.ADMIN_PAGES.contains(requestedServlet) && userAccessLevel != User.AccessLevel.ADMINISTRATOR
-                    || AccessFilterPaths.MANAGER_PAGES.contains(req.getServletPath()) && userAccessLevel != User.AccessLevel.MANAGER
-                    || AccessFilterPaths.USER_PAGES.contains(req.getServletPath()) && userAccessLevel != User.AccessLevel.CLIENT) {
-                resp.sendError(403);
+            if (!AccessFilterPaths.ADMIN_PAGES.contains(requestedServlet)
+                    || (userAccessLevel == User.AccessLevel.CLIENT && AccessFilterPaths.USER_PAGES.contains(requestedServlet))
+                    || (userAccessLevel == User.AccessLevel.MANAGER && AccessFilterPaths.MANAGER_PAGES.contains(requestedServlet))
+                    || (userAccessLevel == User.AccessLevel.ADMINISTRATOR && AccessFilterPaths.ADMIN_PAGES.contains(requestedServlet))) {
+                next.doFilter(request, response);
+            } else {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN);
             }
         }
-        next.doFilter(request, response);
     }
 }
