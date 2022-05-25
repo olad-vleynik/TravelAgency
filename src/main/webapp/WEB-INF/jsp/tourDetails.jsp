@@ -42,7 +42,7 @@
 </head>
 <body>
 
-    <jsp:include page="/WEB-INF/jsp/userHeader.jsp" />
+    <jsp:include page="/WEB-INF/jsp/header.jsp" />
 
     <div class="container tour-container mt-5 col-7">
         <div class="row">
@@ -82,6 +82,10 @@
                                 <tr>
                                     <th scope="row"><fmt:message key="nights"/></th>
                                     <td>${tour.nightsCount}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><fmt:message key="persons"/></th>
+                                    <td>${tour.personsCount}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><fmt:message key="hotel.name"/></th>

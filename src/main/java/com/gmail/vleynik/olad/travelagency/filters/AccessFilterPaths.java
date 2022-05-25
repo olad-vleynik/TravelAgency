@@ -12,7 +12,7 @@ public class AccessFilterPaths {
     static {
         USER_PAGES = new ArrayList<>(Arrays.asList("/order_tour", "/profile"));
 
-        MANAGER_PAGES = new ArrayList<>(Arrays.asList("/edit_order", "/users", "/orders", "/edit_user"));
+        MANAGER_PAGES = new ArrayList<>(Arrays.asList("/edit_order", "/cpanel", "/users", "/orders", "/edit_user"));
         MANAGER_PAGES.addAll(USER_PAGES);
 
         ADMIN_PAGES = new ArrayList<>(Arrays.asList("/add_tour", "/edit_tour", "/ban"));

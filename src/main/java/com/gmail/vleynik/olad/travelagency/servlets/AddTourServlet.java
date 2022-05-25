@@ -81,14 +81,14 @@ public class AddTourServlet extends HttpServlet {
                         filePart.write(imagesDirectory.getAbsolutePath() + "\\" + fileName);
                         tour.setPreviewFile(fileName);
                     } else {
-                        tour.setPreviewFile("images/no-image.jpg");
+                        tour.setPreviewFile("no-image.jpg");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                     log.error("can't upload image file");
                 }
             } else {
-                tour.setPreviewFile("images/no-image.jpg");
+                tour.setPreviewFile("no-image.jpg");
             }
 
             tour.setId(tourDAO.addNew(tour));

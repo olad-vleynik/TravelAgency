@@ -15,12 +15,12 @@
     </welcome-file-list>
 
     <error-page>
-        <error-code>503</error-code>
-        <location>/503.html</location>
+        <error-code>403</error-code>
+        <location>/WEB-INF/jsp/errorPages/403.jsp</location>
     </error-page>
 
     <error-page>
         <error-code>404</error-code>
-        <location>/404.html</location>
+        <location>/WEB-INF/jsp/errorPages/404.jsp</location>
     </error-page>
 </web-app>

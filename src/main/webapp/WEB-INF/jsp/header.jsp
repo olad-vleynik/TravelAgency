@@ -29,6 +29,11 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <c:if test="${not empty sessionScope.user_id}">
+                <c:if test="${sessionScope.user_access_level.getName() == 'administrator' || sessionScope.user_access_level.getName() == 'manager'}">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/cpanel"><fmt:message key="control.panel"/></a>
+                    </li>
+                </c:if>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         ${sessionScope.user_full_name}

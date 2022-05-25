@@ -126,7 +126,7 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/jsp/userHeader.jsp" />
+<jsp:include page="/WEB-INF/jsp/header.jsp" />
 
 <div class="container">
     <div class="row">
@@ -353,7 +353,7 @@
             submitHandler: function(form) {
                 var formData = new FormData(form);
                 $.ajax({
-                    url: '/tour',
+                    url: '/add_tour',
                     data: formData,
                     cache: false,
                     contentType: false,
